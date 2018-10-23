@@ -1,9 +1,10 @@
 <?php
 include_once '../Model/Admin.php';
+
 class LoginControl {
      
-        $email = trim($_POST['inputEmail']);
-        $pass = trim($_POST['inputPassword']);
+        $email = $_POST['inputEmail'];
+        $pass = $_POST['inputPassword'];
                   
           if(!$email || !$pass){
               echo 'Incorrect email or password';

@@ -9,7 +9,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Notification</title>
+    <title>View Past Notification</title>
 
     <!-- Bootstrap core CSS-->
     <link href="../CSS/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -161,47 +161,16 @@
             <li class="breadcrumb-item">
                 <a href="LandingMainPage.php">Dashboard</a>
             </li>
-            <li class="breadcrumb-item active">Notification</li>
+            <li class="breadcrumb-item">
+                <a href="NotificationMainPage.php">Notification</a>
+            </li>
+            <li class="breadcrumb-item active">View Past Notification</li>
           </ol>
 
           <!-- Page Content -->
-          <h1>Notification</h1>
+          <h1>Welcome</h1>
           <hr>
-          <!-- Icon Cards-->
-          <div class="row">
-            <div class="col-xl-3 col-sm-6 mb-3">
-              <div class="card text-white bg-primary o-hidden h-100">
-                <div class="card-body">
-                  <div class="card-body-icon">
-                    <i class="fas fa-fw fa-comments"></i>
-                  </div>
-                  <div class="mr-5">Create notification</div>
-                </div>
-                  <a class="card-footer text-white clearfix small z-1" href="CreateNotification.php">
-                  <span class="float-left">Broadcast notifications</span>
-                  <span class="float-right">
-                    <i class="fas fa-angle-right"></i>
-                  </span>
-                </a>
-              </div>
-            </div>
-            <div class="col-xl-3 col-sm-6 mb-3">
-              <div class="card text-white bg-warning o-hidden h-100">
-                <div class="card-body">
-                  <div class="card-body-icon">
-                    <i class="fas fa-fw fa-book-reader"></i>
-                  </div>
-                  <div class="mr-5">History</div>
-                </div>
-                  <a class="card-footer text-white clearfix small z-1" href="ViewHistoryNotification.php">
-                  <span class="float-left">View notification history</span>
-                  <span class="float-right">
-                    <i class="fas fa-angle-right"></i>
-                  </span>
-                </a>
-              </div>
-            </div>
-          </div>
+          <p>Here's today status</p>
 
         </div>
         <!-- /.container-fluid -->

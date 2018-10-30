@@ -3,9 +3,13 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/D:/xampp/htdocs/TransitPorts/View/LoginAdmin.php</file>
             <file>file:/D:/xampp/htdocs/TransitPorts/View/LandingMainPage.php</file>
+            <file>file:/D:/xampp/htdocs/TransitPorts/View/LoginAdmin.php</file>
+            <file>file:/D:/xampp/htdocs/TransitPorts/View/LogoutAdmin.php</file>
+            <file>file:/D:/xampp/htdocs/TransitPorts/View/NotificationMainPage.php</file>
             <file>file:/D:/xampp/htdocs/TransitPorts/View/LoadingScreen.php</file>
+            <file>file:/D:/xampp/htdocs/TransitPorts/View/CreateNotification.php</file>
+            <file>file:/D:/xampp/htdocs/TransitPorts/View/ViewHistoryNotification.php</file>
         </group>
     </open-files>
 </project-private>

@@ -6,11 +6,30 @@ and open the template in the editor.
 -->
 <html>
     <head>
-        <meta charset="UTF-8">
-        <title>Loading screen</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Loading</title>
+
+    <!-- Bootstrap core CSS-->
+    <link href="../CSS/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom fonts for this template-->
+    <link href="../CSS/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+
+    <!-- Custom styles for this template-->
+    <link href="../CSS/css/sb-admin.css" rel="stylesheet">
     </head>
-    <body>
-        <h2>Authenticating...</h2>
+    <body class="bg-dark">
+
+    <div class="container">
+      <div class="card card-login mx-auto mt-5">
+        <div class="card-header">Authenticating</div>
+        <div class="card-body">
+          
         <?php
         require '../vendor/autoload.php';
 
@@ -55,25 +74,49 @@ and open the template in the editor.
             
             $email=trim($_POST['inputEmail']);
             $password = trim($_POST['inputPassword']);
-                try {
-                    $user = $firebase->getAuth()->verifyPassword($email, $password); 
-                    if($user != null){
-                        echo 'Login Success! Click the following button to proceed<br />';
-                        echo '<a href="../View/LandingMainPage.php">Proceed</a>';
-                    }
-                    
-                } catch (Kreait\Firebase\Exception\Auth\InvalidPassword $e) {
-                    echo $e->getMessage()."<br />";
-                    
+            try {
+                $user = $firebase->getAuth()->verifyPassword($email, $password); 
+                if($user != null){
+                    echo '<div class="text-center">';
+                    echo '<form method="post" action="LandingMainPage.php">';
+                    echo 'Login Success! Click the following button to proceed<br />';
+//                        echo '<a href="../View/LandingMainPage.php">Proceed</a>';
+                    echo '<button class="btn btn-primary btn-block" type="submit" name="btnLogin">Proceed</button>';
+                    echo '</form>';
+                    echo '</div>';
                 }
-               
+
+            } catch (Kreait\Firebase\Exception\Auth\InvalidPassword $e) {
+                echo $e->getMessage()."<br />";
             }
+        }
         
         
     } catch (Exception $ex) {
-        echo "Can't connect to database Firebase";
-        echo '<br /><a href="../View/Loginadmin.php">Back</a>';
+        echo '<div class="text-center">';
+                        echo '<form method="post" action="LoginAdmin.php">';
+                        echo 'Error! Incorrect email and password<br />';
+//                        echo '<a href="../View/LandingMainPage.php">Proceed</a>';
+                        
+                        echo '<button class="btn btn-primary btn-block" type="submit" name="btnLogin">Back</button>';
+                        echo '</form>';
+                        echo '</div>';
     }
         ?>
+            
+        </div>
+      </div>
+    </div>
+
+    <!-- Bootstrap core JavaScript-->
+    <script src="vendor/jquery/jquery.min.js"></script>
+    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Core plugin JavaScript-->
+    <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+
+  
+
+        
     </body>
 </html>

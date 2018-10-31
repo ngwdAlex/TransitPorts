@@ -78,7 +78,7 @@ and open the template in the editor.
                 $user = $firebase->getAuth()->verifyPassword($email, $password); 
                 if($user != null){
                     echo '<div class="text-center">';
-                    echo '<form method="post" action="LandingMainPage.php">';
+                    echo '<form method="post" action="../View/LandingMainPage.php">';
                     echo 'Login Success! Click the following button to proceed<br />';
 //                        echo '<a href="../View/LandingMainPage.php">Proceed</a>';
                     echo '<button class="btn btn-primary btn-block" type="submit" name="btnLogin">Proceed</button>';
@@ -94,7 +94,7 @@ and open the template in the editor.
         
     } catch (Exception $ex) {
         echo '<div class="text-center">';
-                        echo '<form method="post" action="LoginAdmin.php">';
+                        echo '<form method="post" action="../View/LoginAdmin.php">';
                         echo 'Error! Incorrect email and password<br />';
 //                        echo '<a href="../View/LandingMainPage.php">Proceed</a>';
                         

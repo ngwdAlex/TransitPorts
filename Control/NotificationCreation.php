@@ -168,19 +168,68 @@
                     </ol>
 
                     <!-- Page Content -->
-                    <h1>Create Notification</h1>
-                    <hr>
-                    <form method="post" action="../Control/NotificationCreation.php">
-                    <p>Please select the type of notification</p>
-                    <select id="targetNotification" name="targetNotification">
-                        <option value="all">All</option>
-                        <option value="driver">Driver</option>
-                        <option value="user">User</option>
-                    </select>
-                    <p>Please type your content</p>
-                    <textarea name="content" rows="5" cols="40"></textarea><br />
-                    <button type="submit" name="btnNotify">Notify</button>
-                    </form>
+                    <?php
+        require '../vendor/autoload.php';
+
+        use Kreait\Firebase\Factory;
+        use Kreait\Firebase\ServiceAccount;
+
+// This assumes that you have placed the Firebase credentials in the same directory
+        // as this PHP file.
+        $serviceAccount = ServiceAccount::fromJsonFile('../secret/transitports-ee351-ff3793a676d7.json');
+
+        $firebase = (new Factory)
+                ->withServiceAccount($serviceAccount)
+                ->withDatabaseUri('https://transitports-ee351.firebaseio.com')
+                ->create();
+
+        $database = $firebase->getDatabase();
+
+
+
+        //$newPost->getKey(); // => -KVr5eu8gcTv7_AHb-3-
+        //$newPost->getUri(); // => https://my-project.firebaseio.com/blog/posts/-KVr5eu8gcTv7_AHb-3-
+        //
+//$newPost->getChild('title')->set('Changed post title');
+        //$newPost->getValue(); // Fetches the data from the realtime database
+        //$newPost->remove();
+//        }
+        
+        try{
+        if((isset($_POST['targetNotification']))&& isset($_POST['content'])){
+            date_default_timezone_set("Asia/Kuala_Lumpur");
+            $time = date("h:i:sa");
+            $date = date("Y/m/d");
+            $target = $_POST['targetNotification'];
+            $content = trim($_POST['content']);
+            try{
+            $newPost = $database
+                ->getReference('Notification')
+                ->push([
+            'time' => $time,
+            'date' => $date,
+            'target' => $target,
+            'content' => $content
+            ]);
+            echo '<div class="text-center">';
+            echo '<form method="post" action="../View/NotificationMainPage.php">';
+            echo 'Create Notification Success!<br />';
+            echo '<button class="btn btn-primary" type="submit" name="btnLogin">Proceed</button>';
+            echo '</form>';
+            echo '</div>';
+            
+            }catch (\Kreait\Firebase\Exception $e){
+                echo $e->getMessage()."<br />";
+            }
+            
+        }
+        
+        }catch(Exception $ex){
+            echo $ex->getMessage()."<br />";
+        }
+       
+        
+        ?>
                     
                 </div>
                 <!-- /.container-fluid -->
@@ -237,3 +286,4 @@
     </body>
 
 </html>
+

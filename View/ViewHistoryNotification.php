@@ -170,7 +170,45 @@
           <!-- Page Content -->
           <h1>Welcome</h1>
           <hr>
-          <p>Here's today status</p>
+           <?php
+        require '../vendor/autoload.php';
+
+        use Kreait\Firebase\Factory;
+        use Kreait\Firebase\ServiceAccount;
+
+// This assumes that you have placed the Firebase credentials in the same directory
+        // as this PHP file.
+        $serviceAccount = ServiceAccount::fromJsonFile('../secret/transitports-ee351-ff3793a676d7.json');
+
+        $firebase = (new Factory)
+                ->withServiceAccount($serviceAccount)
+                // The following line is optional if the project id in your credentials file
+                // is identical to the subdomain of your Firebase project. If you need it,
+                // make sure to replace the URL with the URL of your project.
+                ->withDatabaseUri('https://transitports-ee351.firebaseio.com')
+                ->create();
+        
+        //        $database = $firebase->getDatabase();
+
+        //$newPost = $database
+        //    ->getReference('blog/posts')
+        //    ->push([
+        //        'title' => 'Post title',
+        //        'body' => 'This should probably be longer.'
+        //    ]);
+        //
+        //$newPost->getKey(); // => -KVr5eu8gcTv7_AHb-3-
+        //$newPost->getUri(); // => https://my-project.firebaseio.com/blog/posts/-KVr5eu8gcTv7_AHb-3-
+        //
+        //$newPost->getChild('title')->set('Changed post title');
+        //$newPost->getValue(); // Fetches the data from the realtime database
+        //$newPost->remove();
+//        if(isset($_POST['btnLogin'])){
+//             $email=trim($_POST['inputEmail']);
+//                $password = trim($_POST['inputPassword']);
+//                $firebase->getAuth()->verifyPassword($email, $password);
+//        }
+       ?>
 
         </div>
         <!-- /.container-fluid -->

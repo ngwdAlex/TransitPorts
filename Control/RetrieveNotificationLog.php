@@ -164,7 +164,7 @@
                         <li class="breadcrumb-item">
                             <a href="NotificationMainPage.php">Notification</a>
                         </li>
-                        <li class="breadcrumb-item active">Create Notification</li>
+                        <li class="breadcrumb-item active">View Past Notification</li>
                     </ol>
 
                     <!-- Page Content -->
@@ -184,57 +184,24 @@
                 ->create();
 
         $database = $firebase->getDatabase();
-
-
-
-        //$newPost->getKey(); // => -KVr5eu8gcTv7_AHb-3-
-        //$newPost->getUri(); // => https://my-project.firebaseio.com/blog/posts/-KVr5eu8gcTv7_AHb-3-
-        //
-//$newPost->getChild('title')->set('Changed post title');
-        //$newPost->getValue(); // Fetches the data from the realtime database
-        //$newPost->remove();
-//        }
+        $reference = $database->getReference('Notification');
         
-        try{
-        if((isset($_POST['targetNotification']))&& isset($_POST['content'])){
-            date_default_timezone_set("Asia/Kuala_Lumpur");
-            $time = date("h:i:sa");
-            $date = date("Y/m/d");
-            $target = $_POST['targetNotification'];
-            $content = trim($_POST['content']);
-            try{
-                if($content === ""){
-                    echo '<div class="text-center">';
-                    echo '<form method="post" action="../View/CreateNotification.php">';
-                    echo 'Create Notification unsuccessful! Content is required.<br />';
-                    echo '<button class="btn btn-primary" type="submit" name="btnProceed">Proceed</button>';
-                    echo '</form>';
-                    echo '</div>';
-                }else{
-                $newPost = $database
-                    ->getReference('Notification')
-                    ->push([
-                'time' => $time,
-                'date' => $date,
-                'target' => $target,
-                'content' => $content
-                ]);
-                echo '<div class="text-center">';
-                echo '<form method="post" action="../View/NotificationMainPage.php">';
-                echo 'Create Notification Success!<br />';
-                echo '<button class="btn btn-primary" type="submit" name="btnProceed">Proceed</button>';
-                echo '</form>';
-                echo '</div>';
-                }
-            }catch (\Kreait\Firebase\Exception $e){
-                echo $e->getMessage()."<br />";
-            }
-            
+        echo '<div class="text-center">';
+        if($reference===null){
+            echo 'No result found';
+        }else{
+           
+            echo print_r($reference->getValue());
+//            echo $result;
+
         }
         
-        }catch(Exception $ex){
-            echo $ex->getMessage()."<br />";
-        }
+        echo '<form method="post" action="../View/NotificationMainPage.php">';
+        echo '<button class="btn btn-primary" type="submit" name="btnBack">Back</button>';
+        echo '</form>';
+        echo '</div>';
+        
+        
        
         
         ?>

@@ -9,7 +9,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Main Page</title>
+    <title>Comments</title>
 
     <!-- Bootstrap core CSS-->
     <link href="../CSS/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -29,7 +29,7 @@
 
     <nav class="navbar navbar-expand navbar-dark bg-dark static-top">
 
-        <a class="navbar-brand mr-1" href="../View/LandingMainPage.php">TransitPorts</a>
+      <a class="navbar-brand mr-1" href="LandingMainPage.php">TransitPorts</a>
 
       <button class="btn btn-link btn-sm text-white order-1 order-sm-0" id="sidebarToggle" href="#">
         <i class="fas fa-bars"></i>
@@ -161,30 +161,75 @@
             <li class="breadcrumb-item">
                 <a href="../View/LandingMainPage.php">Dashboard</a>
             </li>
-            <li class="breadcrumb-item active">Overview</li>
+            <li class="breadcrumb-item active">Comments</li>
           </ol>
 
           <!-- Page Content -->
-          <h1>Welcome</h1>
+          <h1>Comments from user</h1>
           <hr>
-          <div class="row">
-            <div class="col-xl-3 col-sm-6 mb-3">
-              <div class="card text-white bg-primary o-hidden h-100">
-                <div class="card-body">
-                  <div class="card-body-icon">
-                    <i class="fas fa-fw fa-comments"></i>
-                  </div>
-                  <div class="mr-5">Comments from user</div>
-                </div>
-                  <a class="card-footer text-white clearfix small z-1" href="../Control/RetrieveComments.php">
-                  <span class="float-left">View Comments</span>
-                  <span class="float-right">
-                    <i class="fas fa-angle-right"></i>
-                  </span>
-                </a>
-              </div>
-            </div>
-          </div>
+          <?php
+        require '../vendor/autoload.php';
+
+        use Kreait\Firebase\Factory;
+        use Kreait\Firebase\ServiceAccount;
+
+// This assumes that you have placed the Firebase credentials in the same directory
+        // as this PHP file.
+        $serviceAccount = ServiceAccount::fromJsonFile('../secret/transitports-ee351-ff3793a676d7.json');
+
+        $firebase = (new Factory)
+                ->withServiceAccount($serviceAccount)
+                ->withDatabaseUri('https://transitports-ee351.firebaseio.com')
+                ->create();
+
+        $database = $firebase->getDatabase();
+        
+        $reference = $database->getReferenceFromUrl("https://transitports-ee351.firebaseio.com/Comments");
+        $snapshot = $reference->getSnapshot();
+        $count = $snapshot->numChildren();
+        echo '<div class="text-center">';
+        if($reference===null){
+            echo 'No result found';
+        }else{
+           if($snapshot->hasChildren()){
+               $childKey = $reference->getChildKeys();
+//               $first = $reference->startAt($childKey);
+                   echo '<div class="card-body">';
+                   echo '<div class="table-responsive">';
+                   echo '<table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">';
+                   echo '<thead>';
+                   echo '<tr>
+                      <th>Date</th>
+                      <th>Time</th>
+                      <th>Content</th>
+                      </tr>
+                   </thead>';
+                   echo '<tbody>';
+                   
+               for($i=0;$i<$count;$i++){
+                   $resultKey = $reference->getChild($childKey[$i]);
+                   $result = $resultKey->getChildKeys();
+                   $dateResult = $resultKey->getChild($result[1])->getValue();
+                   $contentResult = $resultKey->getChild($result[0])->getValue();
+                   $timeResult = $resultKey->getChild($result[2])->getValue();
+                   echo '<tr>';
+                   echo '<td>'.$dateResult.'</td>';
+                   echo '<td>'.$timeResult.'</td>';
+                   echo '<td>'.$contentResult.'</td>';
+                   echo '</tr>';
+               }
+               echo '</tbody>'
+               . '</table>';
+               
+                echo '</div>';
+                echo '</div>';
+
+           }else{
+               echo 'No comments so far';
+           }
+        }
+        
+        ?>
 
         </div>
         <!-- /.container-fluid -->

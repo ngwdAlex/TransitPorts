@@ -173,7 +173,7 @@
               <div class="card text-white bg-primary o-hidden h-100">
                 <div class="card-body">
                   <div class="card-body-icon">
-                    <i class="fas fa-fw fa-comments"></i>
+                    <i class="fas fa-fw fa-exclamation"></i>
                   </div>
                   <div class="mr-5">Create notification</div>
                 </div>

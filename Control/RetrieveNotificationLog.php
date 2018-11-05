@@ -29,7 +29,7 @@
 
         <nav class="navbar navbar-expand navbar-dark bg-dark static-top">
 
-            <a class="navbar-brand mr-1" href="LandingMainPage.php">TransitPorts</a>
+            <a class="navbar-brand mr-1" href="../View/LandingMainPage.php">TransitPorts</a>
 
             <button class="btn btn-link btn-sm text-white order-1 order-sm-0" id="sidebarToggle" href="#">
                 <i class="fas fa-bars"></i>
@@ -93,32 +93,32 @@
             <!-- Sidebar -->
             <ul class="sidebar navbar-nav">
                 <li class="nav-item">
-                    <a class="nav-link" href="LandingMainPage.php">
+                    <a class="nav-link" href="../View/LandingMainPage.php">
                         <i class="fas fa-fw fa-tachometer-alt"></i>
                         <span>Dashboard</span>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="ScheduleMainPage.php">
+                    <a class="nav-link" href="../View/ScheduleMainPage.php">
                         <i class="fas fa-fw fa-table"></i>
                         <span>Schedule</span>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="MonitorMainPage.php">
+                    <a class="nav-link" href="../View/MonitorMainPage.php">
                         <i class="fas fa-fw fa-check-square"></i>
                         <span>Monitor</span>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="NotificationMainPage.php">
+                    <a class="nav-link" href="../View/NotificationMainPage.php">
                         <i class="fas fa-fw fa-exclamation"></i>
                         <span>Notification</span>
 
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="ReportMainPage.php">
+                    <a class="nav-link" href="../View/ReportMainPage.php">
                         <i class="fas fa-fw fa-address-book"></i>
                         <span>Report</span>
                     </a>
@@ -159,15 +159,16 @@
                     <!-- Breadcrumbs-->
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item">
-                            <a href="LandingMainPage.php">Dashboard</a>
+                            <a href="../View/LandingMainPage.php">Dashboard</a>
                         </li>
                         <li class="breadcrumb-item">
-                            <a href="NotificationMainPage.php">Notification</a>
+                            <a href="../View/NotificationMainPage.php">Notification</a>
                         </li>
                         <li class="breadcrumb-item active">View Past Notification</li>
                     </ol>
 
                     <!-- Page Content -->
+                    
                     <?php
         require '../vendor/autoload.php';
 
@@ -184,25 +185,54 @@
                 ->create();
 
         $database = $firebase->getDatabase();
-        $reference = $database->getReference('Notification');
         
+        $reference = $database->getReferenceFromUrl("https://transitports-ee351.firebaseio.com/Notification");
+        $snapshot = $reference->getSnapshot();
+        $count = $snapshot->numChildren();
         echo '<div class="text-center">';
         if($reference===null){
             echo 'No result found';
         }else{
-           
-            echo print_r($reference->getValue());
-//            echo $result;
+           if($snapshot->hasChildren()){
+               $childKey = $reference->getChildKeys();
+//               $first = $reference->startAt($childKey);
+                   echo '<div class="card-body">';
+                   echo '<div class="table-responsive">';
+                   echo '<table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">';
+                   echo '<thead>';
+                   echo '<tr>
+                      <th>Date</th>
+                      <th>Time</th>
+                      <th>Content</th>
+                      <th>Target</th>
+                      </tr>
+                   </thead>';
+                   echo '<tbody>';
+                   
+               for($i=0;$i<$count;$i++){
+                   $resultKey = $reference->getChild($childKey[$i]);
+                   $result = $resultKey->getChildKeys();
+                   $dateResult = $resultKey->getChild($result[1])->getValue();
+                   $contentResult = $resultKey->getChild($result[0])->getValue();
+                   $targetResult = $resultKey->getChild($result[2])->getValue();
+                   $timeResult = $resultKey->getChild($result[3])->getValue();
+                   echo '<tr>';
+                   echo '<td>'.$dateResult.'</td>';
+                   echo '<td>'.$timeResult.'</td>';
+                   echo '<td>'.$contentResult.'</td>';
+                   echo '<td>'.$targetResult.'</td>';
+                   echo '</tr>';
+               }
+               echo '</tbody>'
+               . '</table>';
+               echo '<form method="post" action="../View/NotificationMainPage.php">';
+                echo '<button class="btn btn-primary" type="submit" name="btnBack">Back</button>';
+                echo '</form>';
+                echo '</div>';
+                echo '</div>';
 
+           }
         }
-        
-        echo '<form method="post" action="../View/NotificationMainPage.php">';
-        echo '<button class="btn btn-primary" type="submit" name="btnBack">Back</button>';
-        echo '</form>';
-        echo '</div>';
-        
-        
-       
         
         ?>
                     

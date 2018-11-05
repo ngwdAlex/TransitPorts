@@ -29,7 +29,7 @@
 
         <nav class="navbar navbar-expand navbar-dark bg-dark static-top">
 
-            <a class="navbar-brand mr-1" href="LandingMainPage.php">TransitPorts</a>
+            <a class="navbar-brand mr-1" href="../View/LandingMainPage.php">TransitPorts</a>
 
             <button class="btn btn-link btn-sm text-white order-1 order-sm-0" id="sidebarToggle" href="#">
                 <i class="fas fa-bars"></i>
@@ -93,32 +93,32 @@
             <!-- Sidebar -->
             <ul class="sidebar navbar-nav">
                 <li class="nav-item">
-                    <a class="nav-link" href="LandingMainPage.php">
+                    <a class="nav-link" href="../View/LandingMainPage.php">
                         <i class="fas fa-fw fa-tachometer-alt"></i>
                         <span>Dashboard</span>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="ScheduleMainPage.php">
+                    <a class="nav-link" href="../View/ScheduleMainPage.php">
                         <i class="fas fa-fw fa-table"></i>
                         <span>Schedule</span>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="MonitorMainPage.php">
+                    <a class="nav-link" href="../View/MonitorMainPage.php">
                         <i class="fas fa-fw fa-check-square"></i>
                         <span>Monitor</span>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="NotificationMainPage.php">
+                    <a class="nav-link" href="../View/NotificationMainPage.php">
                         <i class="fas fa-fw fa-exclamation"></i>
                         <span>Notification</span>
 
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="ReportMainPage.php">
+                    <a class="nav-link" href="../View/ReportMainPage.php">
                         <i class="fas fa-fw fa-address-book"></i>
                         <span>Report</span>
                     </a>
@@ -159,10 +159,10 @@
                     <!-- Breadcrumbs-->
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item">
-                            <a href="LandingMainPage.php">Dashboard</a>
+                            <a href="../View/LandingMainPage.php">Dashboard</a>
                         </li>
                         <li class="breadcrumb-item">
-                            <a href="NotificationMainPage.php">Notification</a>
+                            <a href="../View/NotificationMainPage.php">Notification</a>
                         </li>
                         <li class="breadcrumb-item active">Create Notification</li>
                     </ol>
@@ -275,7 +275,7 @@
                     <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
                     <div class="modal-footer">
                         <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                        <a class="btn btn-primary" href="LoginAdmin.php">Logout</a>
+                        <a class="btn btn-primary" href="../View/LoginAdmin.php">Logout</a>
                     </div>
                 </div>
             </div>

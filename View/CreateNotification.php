@@ -173,9 +173,9 @@
                     <form method="post" action="../Control/NotificationCreation.php">
                     <p>Please select the type of notification</p>
                     <select id="targetNotification" name="targetNotification">
-                        <option value="all">All</option>
-                        <option value="driver">Driver</option>
-                        <option value="user">User</option>
+                        <option value="All">All</option>
+                        <option value="Driver">Driver</option>
+                        <option value="User">User</option>
                     </select>
                     <p>Please type your content</p>
                     <textarea name="content" rows="5" cols="40"></textarea><br />

@@ -173,7 +173,8 @@
 
         use Kreait\Firebase\Factory;
         use Kreait\Firebase\ServiceAccount;
-
+        use Kreait\Firebase\Messaging\Notification;
+        use Kreait\Firebase\Messaging\CloudMessage;
 // This assumes that you have placed the Firebase credentials in the same directory
         // as this PHP file.
         $serviceAccount = ServiceAccount::fromJsonFile('../secret/transitports-ee351-ff3793a676d7.json');
@@ -185,6 +186,7 @@
 
         $database = $firebase->getDatabase();
 
+        $messaging = $firebase->getMessaging();
 
 
         //$newPost->getKey(); // => -KVr5eu8gcTv7_AHb-3-
@@ -199,7 +201,7 @@
         if((isset($_POST['targetNotification']))&& isset($_POST['content'])){
             date_default_timezone_set("Asia/Kuala_Lumpur");
             $time = date("h:i:sa");
-            $date = date("Y/m/d");
+            $date = date("d/m/Y");
             $target = $_POST['targetNotification'];
             $content = trim($_POST['content']);
             try{
@@ -211,6 +213,14 @@
                     echo '</form>';
                     echo '</div>';
                 }else{
+                    if($target === "Driver"){
+                        $condition = 'Driver';
+                    }else if($target === "User"){
+                        $condition = 'User';
+                    }else{
+                        $condition = 'Driver'&&'User';
+                    }
+                    
                 $newPost = $database
                     ->getReference('Notification')
                     ->push([
@@ -225,6 +235,17 @@
                 echo '<button class="btn btn-primary" type="submit" name="btnProceed">Proceed</button>';
                 echo '</form>';
                 echo '</div>';
+                
+                $message = CloudMessage::withTarget('condition', $condition);
+                $messaging->send($message);
+                
+                $notification = Notification::fromArray([
+                    'title' => "Notice",
+                    'body' => $content
+                ]);
+                
+                
+                $message = $message->withNotification($notification);
                 }
             }catch (\Kreait\Firebase\Exception $e){
                 echo $e->getMessage()."<br />";

@@ -202,6 +202,7 @@
                       <th>Date</th>
                       <th>Time</th>
                       <th>Content</th>
+                      <th>Target</th>
                       </tr>
                    </thead>';
                    echo '<tbody>';
@@ -209,13 +210,15 @@
                for($i=0;$i<$count;$i++){
                    $resultKey = $reference->getChild($childKey[$i]);
                    $result = $resultKey->getChildKeys();
-                   $dateResult = $resultKey->getChild($result[1])->getValue();
-                   $contentResult = $resultKey->getChild($result[0])->getValue();
-                   $timeResult = $resultKey->getChild($result[2])->getValue();
+                   $dateResult = $resultKey->getChild($result[2])->getValue();
+                   $contentResult = $resultKey->getChild($result[1])->getValue();
+                   $timeResult = $resultKey->getChild($result[3])->getValue();
+                   $targetResult = $resultKey->getChild($result[0])->getValue();
                    echo '<tr>';
                    echo '<td>'.$dateResult.'</td>';
                    echo '<td>'.$timeResult.'</td>';
                    echo '<td>'.$contentResult.'</td>';
+                   echo '<td>'.$targetResult.'</td>';
                    echo '</tr>';
                }
                echo '</tbody>'

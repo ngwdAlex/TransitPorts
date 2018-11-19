@@ -176,27 +176,11 @@
                         <p>Please select line of the route</p>
                             <select id="busLineSelect" name="busLineSelect">
                                 <option value="">Bus Line</option>
-                                <option value="200">200</option>
-                                <option value="201">201</option>
-                                <option value="202">202</option>
-                                <option value="220">220</option>
-                                <option value="221">221</option>
                                 <option value="222">222</option>
                                 <option value="250">250</option>
                                 <option value="251">251</option>
                                 <option value="253">253</option>
-                                <option value="254">254</option>
-                                <option value="T200">T200</option>
-                                <option value="T201">T201</option>
-                                <option value="T202">T202</option>
-                                <option value="T203">T203</option>
-                                <option value="T204">T204</option>
-                                <option value="T221">T221</option>
-                                <option value="T222">T222</option>
-                                <option value="T223">T223</option>
-                                <option value="T224">T224</option>
                                 <option value="T250">T250</option>
-                                <option value="T251">T251</option>
                             </select>
                         <p>Please select month and year of the report</p>
                         <select id="monthRouteSelect" name="monthRouteSelect">

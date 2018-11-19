@@ -23,8 +23,7 @@
     <!-- Custom styles for this template-->
     <link href="../CSS/css/sb-admin.css" rel="stylesheet">
 
-    <!--OpenLayer Map CSS-->
-    <link href="../CSS/ol.css" rel="stylesheet" type="text/css">
+    
     <style>
         .map {
             height: 650px;
@@ -41,8 +40,7 @@
       }
     </style>
     
-    <!--OpenLayer JavaScript-->
-    <script src="../CSS/js/ol.js"></script>
+    
   </head>
 
   <body id="page-top">
@@ -187,34 +185,91 @@
           <!-- Page Content -->
           <h1>Monitor</h1>
           <hr>
+          <form method="get" action="MonitorMainPage.php">
+          <select id="busLineSelect" name="busLineSelect">
+            <option value="">Bus Line</option>
+            <option value="222">222</option>
+            <option value="250">250</option>
+            <option value="251">251</option>
+            <option value="T250">T250</option>
+          </select>
+              <input type="submit" name="search" value="Search">
+          </form>
+          
           <div id="map" class="map"></div>
-            <script type="text/javascript">
-              var map = new ol.Map({
-                target: 'map',
-                layers: [
-                  new ol.layer.Tile({
-                    source: new ol.source.OSM()
-                  })
-                ],
-                view: new ol.View({
-        //            coordinate is Y, X
-                  center: ol.proj.fromLonLat([101.72, 3.19]),
-                  zoom: 14
-                  //center: ol.proj.fromLonLat([101.7149225,3.2037204]),
-                  //zoom: 18
-                })
-              });
-                  //not working
-//                var pos = fromLonLat([101.7149225,3.2037204]);
-//                var markerWangsaMajuLRT = new Overlay({
-//                position: pos,
-//                positioning: 'center-center',
-//                element: document.getElementById('marker'),
-//                stopEvent: false
-//              });
-//              map.addOverlay(markerWangsaMajuLRT);
+            
+            
+            <?php
+            require '../vendor/autoload.php';
 
+           use Kreait\Firebase\Factory;
+           use Kreait\Firebase\ServiceAccount;
+            try{
+            if(isset($_GET['busLineSelect'])){
+                $busLine = $_GET['busLineSelect'];
+                $serviceAccount = ServiceAccount::fromJsonFile('../secret/transitports-ee351-ff3793a676d7.json');
 
+                $firebase = (new Factory)
+                        ->withServiceAccount($serviceAccount)
+                        ->withDatabaseUri('https://transitports-ee351.firebaseio.com')
+                        ->create();
+                
+                
+                $link = "https://transitports-ee351.firebaseio.com/Route/".$busLine;
+                
+                $database = $firebase->getDatabase();
+                $reference = $database->getReferenceFromUrl($link);
+                $snapshot = $reference->orderByValue()->getSnapshot();
+                $count = $snapshot->numChildren();
+                echo '<div class="text-center">';
+                
+                if($reference===null){
+                    echo '<p>No result found</p>';
+                }else{
+                   if($snapshot->hasChildren()){
+                       
+                       $childRef = $snapshot->getReference();
+                       $childKey = $childRef->getValue();
+                       
+                       echo var_dump($childKey);
+//                       for($i=0;$i<$count;$i++){
+//                       $resultKey = $reference->getChild($childKey[$i]);
+//                       $result = $resultKey->getChildKeys();
+//                       $childResult = $resultKey->getChild($result[0])->getValue();
+//                       echo var_dump($childResult);
+                       
+////                       $result = $resultKey->getChildKeys();
+//                       $stationName = $resultKey->getValue();
+//                       echo var_dump($stationName);
+//                       }
+                    }
+                }
+            }
+            }catch(Exception $ex){
+                echo $ex->getMessage()."<br />";
+            }
+
+            ?>
+            
+<!--            // Initialize and add the map
+            function initMap() {
+              // The location of wangsa maju center
+              var wangsaMajuCenter = {lat: 3.209281, lng: 101.727162};
+              
+              //location of all bus station of t250
+              //var station = [];
+              //centering map view
+              var map = new google.maps.Map(
+                  document.getElementById('map'), {zoom: 15, center: wangsaMajuCenter});
+              // The marker, positioned at stations along the line
+              //var marker = new google.maps.Marker({position: wangsaMaju, map: map});
+            }-->
+            
+            
+            
+           
+            <script async defer
+            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBhrtJyw1UeO-GbLMukViXPRpJYWi5oz6k&callback=initMap">
             </script>
 
         </div>

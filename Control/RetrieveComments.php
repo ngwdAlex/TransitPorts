@@ -192,7 +192,8 @@
             echo 'No result found';
         }else{
            if($snapshot->hasChildren()){
-               $childKey = $reference->getChildKeys();
+               $userIDKey = $reference->getChildKeys();
+               
 //               $first = $reference->startAt($childKey);
                    echo '<div class="card-body">';
                    echo '<div class="table-responsive">';
@@ -208,9 +209,10 @@
                    echo '<tbody>';
                    
                for($i=0;$i<$count;$i++){
-                   $resultKey = $reference->getChild($childKey[$i]);
+                   
+                   $resultKey = $reference->getChildKeys()->getChildKeys();
                    $result = $resultKey->getChildKeys();
-                   $dateResult = $resultKey->getChild($result[2])->getValue();
+                   $dateResult = $resultKey->getChild("date")->getValue();
                    $contentResult = $resultKey->getChild($result[1])->getValue();
                    $timeResult = $resultKey->getChild($result[3])->getValue();
                    $targetResult = $resultKey->getChild($result[0])->getValue();

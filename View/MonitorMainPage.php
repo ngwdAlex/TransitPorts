@@ -185,7 +185,7 @@
           <!-- Page Content -->
           <h1>Monitor</h1>
           <hr>
-          <form method="get" action="MonitorMainPage.php">
+          <form method="post" action="MonitorMainPage.php">
           <select id="busLineSelect" name="busLineSelect">
             <option value="">Bus Line</option>
             <option value="222">222</option>
@@ -198,15 +198,37 @@
           
           <div id="map" class="map"></div>
             
+          <script>
+          // Initialize and add the map
+            function initMap() {
+              // The location of wangsa maju center
+              var wangsaMajuCenter = {lat: 3.209281, lng: 101.727162};
+              
+              //centering map view
+              var map = new google.maps.Map(
+                  document.getElementById('map'), {zoom: 15, center: wangsaMajuCenter});
             
+             //The marker, positioned at stations along the line
+              var marker = new google.maps.Marker({position: wangsaMajuCenter, map: map});
+              
+            var transitLayer = new google.maps.TransitLayer();
+            marker.setMap(map);
+            transitLayer.setMap(map);
+            }
+            </script>
+            <script async defer
+                src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBhrtJyw1UeO-GbLMukViXPRpJYWi5oz6k&callback=initMap">
+            </script>
             <?php
             require '../vendor/autoload.php';
 
            use Kreait\Firebase\Factory;
            use Kreait\Firebase\ServiceAccount;
+           
+           set_time_limit(0);
             try{
-            if(isset($_GET['busLineSelect'])){
-                $busLine = $_GET['busLineSelect'];
+            if(isset($_POST['busLineSelect'])){
+                $busLine = $_POST['busLineSelect'];
                 $serviceAccount = ServiceAccount::fromJsonFile('../secret/transitports-ee351-ff3793a676d7.json');
 
                 $firebase = (new Factory)
@@ -227,22 +249,33 @@
                     echo '<p>No result found</p>';
                 }else{
                    if($snapshot->hasChildren()){
-                       
+//                       echo "<script>";
+                       //t250 station arrange accordingly with its respective coord and name
                        $childRef = $snapshot->getReference();
-                       $childKey = $childRef->getValue();
+//                       $childRef = $reference->getChildKeys();
                        
-                       echo var_dump($childKey);
-//                       for($i=0;$i<$count;$i++){
-//                       $resultKey = $reference->getChild($childKey[$i]);
-//                       $result = $resultKey->getChildKeys();
-//                       $childResult = $resultKey->getChild($result[0])->getValue();
-//                       echo var_dump($childResult);
-                       
-////                       $result = $resultKey->getChildKeys();
-//                       $stationName = $resultKey->getValue();
-//                       echo var_dump($stationName);
-//                       }
+                       //accessing each child for it's coor and name
+                       for($i=1;$i<$count;$i++){
+                           
+                           $childResult = $childRef->getChild("$i");
+                           
+                            $densityResult = $childResult->getChild("density")->getValue();
+                            $latCoorResult = $childResult->getChild("latCoor")->getValue();
+                            $longCoorResult = $childResult->getChild("longCoor")->getValue();
+                            $stationNameResult = $childResult->getChild("stationName")->getValue();
+                            $marker = "marker"."$i";
+                            $coordinate = 'lat: '.$latCoorResult.', lng: '.$longCoorResult;
+                            
+                            //marker cannot shown
+                            echo 'var '.$marker.' = new google.maps.Marker({position: '. $coordinate.', map: map});';
+//                            echo "$marker.'= new google.maps.Marker({position: '.$coordinate.'map: map});";
+                            echo $marker.'.setMap(map);';
+                            
+                            
+                       }
+                       echo "</script>";
                     }
+                    echo '<p>execution complete</p>';
                 }
             }
             }catch(Exception $ex){
@@ -251,26 +284,13 @@
 
             ?>
             
-<!--            // Initialize and add the map
-            function initMap() {
-              // The location of wangsa maju center
-              var wangsaMajuCenter = {lat: 3.209281, lng: 101.727162};
+            
               
-              //location of all bus station of t250
-              //var station = [];
-              //centering map view
-              var map = new google.maps.Map(
-                  document.getElementById('map'), {zoom: 15, center: wangsaMajuCenter});
-              // The marker, positioned at stations along the line
-              //var marker = new google.maps.Marker({position: wangsaMaju, map: map});
-            }-->
             
             
             
            
-            <script async defer
-            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBhrtJyw1UeO-GbLMukViXPRpJYWi5oz6k&callback=initMap">
-            </script>
+            
 
         </div>
         <!-- /.container-fluid -->

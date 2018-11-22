@@ -256,9 +256,8 @@
                        
                        //accessing each child for it's coor and name
                        for($i=1;$i<$count;$i++){
-                           
-                           $childResult = $childRef->getChild("$i");
-                           
+                            $childResult = $childRef->getChild("$i");
+                            //able get all stations
                             $densityResult = $childResult->getChild("density")->getValue();
                             $latCoorResult = $childResult->getChild("latCoor")->getValue();
                             $longCoorResult = $childResult->getChild("longCoor")->getValue();

@@ -9,7 +9,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Main Page</title>
+    <title>Route</title>
 
     <!-- Bootstrap core CSS-->
     <link href="../CSS/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -173,23 +173,72 @@
             <li class="breadcrumb-item">
                 <a href="../View/LandingMainPage.php">Dashboard</a>
             </li>
-            <li class="breadcrumb-item active">Overview</li>
+            <li class="breadcrumb-item active">Route</li>
           </ol>
 
           <!-- Page Content -->
-          <h1>Welcome</h1>
+          <h1>Route</h1>
           <hr>
+          <!-- Icon Cards-->
           <div class="row">
             <div class="col-xl-3 col-sm-6 mb-3">
               <div class="card text-white bg-primary o-hidden h-100">
                 <div class="card-body">
                   <div class="card-body-icon">
-                    <i class="fas fa-fw fa-comments"></i>
+                    <i class="fas fa-fw fa-plus"></i>
                   </div>
-                  <div class="mr-5">Comments from user</div>
+                  <div class="mr-5">Add Route</div>
                 </div>
-                  <a class="card-footer text-white clearfix small z-1" href="../Control/RetrieveComments.php">
-                  <span class="float-left">View Comments</span>
+                <a class="card-footer text-white clearfix small z-1" href="#">
+                  <span class="float-left">Add new route</span>
+                  <span class="float-right">
+                    <i class="fas fa-angle-right"></i>
+                  </span>
+                </a>
+              </div>
+            </div>
+            <div class="col-xl-3 col-sm-6 mb-3">
+              <div class="card text-white bg-warning o-hidden h-100">
+                <div class="card-body">
+                  <div class="card-body-icon">
+                    <i class="fas fa-fw fa-eye"></i>
+                  </div>
+                  <div class="mr-5">View Route</div>
+                </div>
+                <a class="card-footer text-white clearfix small z-1" href="#">
+                  <span class="float-left">Look at existing route</span>
+                  <span class="float-right">
+                    <i class="fas fa-angle-right"></i>
+                  </span>
+                </a>
+              </div>
+            </div>
+              <div class="col-xl-3 col-sm-6 mb-3">
+              <div class="card text-white bg-success o-hidden h-100">
+                <div class="card-body">
+                  <div class="card-body-icon">
+                    <i class="fas fa-fw fa-book-open"></i>
+                  </div>
+                  <div class="mr-5">Update Route</div>
+                </div>
+                <a class="card-footer text-white clearfix small z-1" href="#">
+                  <span class="float-left">Update route information</span>
+                  <span class="float-right">
+                    <i class="fas fa-angle-right"></i>
+                  </span>
+                </a>
+              </div>
+            </div>
+              <div class="col-xl-3 col-sm-6 mb-3">
+              <div class="card text-white bg-danger o-hidden h-100">
+                <div class="card-body">
+                  <div class="card-body-icon">
+                    <i class="fas fa-fw fa-minus"></i>
+                  </div>
+                  <div class="mr-5">Remove Route</div>
+                </div>
+                <a class="card-footer text-white clearfix small z-1" href="#">
+                  <span class="float-left">Remove existing route</span>
                   <span class="float-right">
                     <i class="fas fa-angle-right"></i>
                   </span>
@@ -197,6 +246,8 @@
               </div>
             </div>
           </div>
+
+        </div>
 
         </div>
         <!-- /.container-fluid -->

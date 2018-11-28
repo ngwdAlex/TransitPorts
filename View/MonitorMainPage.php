@@ -111,32 +111,44 @@
       <!-- Sidebar -->
       <ul class="sidebar navbar-nav">
         <li class="nav-item">
-          <a class="nav-link" href="LandingMainPage.php">
+            <a class="nav-link" href="../View/LandingMainPage.php">
             <i class="fas fa-fw fa-tachometer-alt"></i>
             <span>Dashboard</span>
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="ScheduleMainPage.php">
+            <a class="nav-link" href="../View/DriverMainPage.php">
+            <i class="fas fa-fw fa-bus"></i>
+            <span>Driver</span>
+          </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="../View/RouteMainPage.php">
+            <i class="fas fa-fw fa-road"></i>
+            <span>Route</span>
+          </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="../View/ScheduleMainPage.php">
             <i class="fas fa-fw fa-table"></i>
             <span>Schedule</span>
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="MonitorMainPage.php">
+            <a class="nav-link" href="../View/MonitorMainPage.php">
             <i class="fas fa-fw fa-check-square"></i>
             <span>Monitor</span>
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="NotificationMainPage.php">
+            <a class="nav-link" href="../View/NotificationMainPage.php">
             <i class="fas fa-fw fa-exclamation"></i>
             <span>Notification</span>
             
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="ReportMainPage.php">
+            <a class="nav-link" href="../View/ReportMainPage.php">
             <i class="fas fa-fw fa-address-book"></i>
             <span>Report</span>
           </a>
@@ -185,17 +197,7 @@
           <!-- Page Content -->
           <h1>Monitor</h1>
           <hr>
-          <form method="post" action="MonitorMainPage.php">
-          <select id="busLineSelect" name="busLineSelect">
-            <option value="">Bus Line</option>
-            <option value="222">222</option>
-            <option value="250">250</option>
-            <option value="251">251</option>
-            <option value="T250">T250</option>
-          </select>
-              <input type="submit" name="search" value="Search">
-          </form>
-          
+                   
           <div id="map" class="map"></div>
             
           <script>
@@ -203,92 +205,70 @@
             function initMap() {
               // The location of wangsa maju center
               var wangsaMajuCenter = {lat: 3.209281, lng: 101.727162};
-              
               //centering map view
               var map = new google.maps.Map(
                   document.getElementById('map'), {zoom: 15, center: wangsaMajuCenter});
+               var transitLayer = new google.maps.TransitLayer();
+               transitLayer.setMap(map);
+               }
+           </script>
+                <?php
+                require '../vendor/autoload.php';
+
+                use Kreait\Firebase\Factory;
+                use Kreait\Firebase\ServiceAccount;
+
+                set_time_limit(0);
+                try{
+                    $serviceAccount = ServiceAccount::fromJsonFile('../secret/transitports-ee351-ff3793a676d7.json');
+
+                    $firebase = (new Factory)
+                            ->withServiceAccount($serviceAccount)
+                            ->withDatabaseUri('https://transitports-ee351.firebaseio.com')
+                            ->create();
+
+                    
+
+                    $database = $firebase->getDatabase();
+                    $reference = $database->getReferenceFromUrl("https://transitports-ee351.firebaseio.com/Route/");
+                    $snapshot = $reference->getSnapshot();
+                    
+                    echo '<div class="text-center">';
+
+                    if($snapshot->hasChildren()){
+//                        $referenceChild = $snapshot->getValue();//can get all value
+//                        echo var_dump($referenceChild); 
+                        $childKey = $reference->getChildKeys();
+                        $val = $snapshot->getChild($childKey[1])->getValue();
+                        echo var_dump($val);
+                        
+//                        $count = $snapshot->numChildren();
+//                           for($i=0;$i<$count;$i++){     
+//                                $result = $reference->getChild($referenceChild[$i])->getValue();
+//                                echo var_dump($result);
+//                           }
+                    }else{
+                        echo '<p>No result found</p>';
+                         
+                    }   
+                    echo '</div>';
+                }catch(Exception $ex){
+                   echo $ex->getMessage()."<br />";
+                }
+                
+                ?> 
             
-             //The marker, positioned at stations along the line
-              var marker = new google.maps.Marker({position: wangsaMajuCenter, map: map});
+            
+            
+            
+            
               
-            var transitLayer = new google.maps.TransitLayer();
-            marker.setMap(map);
-            transitLayer.setMap(map);
-            }
-            </script>
-            <script async defer
+            
+            
+            
+           <script async defer
                 src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBhrtJyw1UeO-GbLMukViXPRpJYWi5oz6k&callback=initMap">
             </script>
-            <?php
-            require '../vendor/autoload.php';
-
-           use Kreait\Firebase\Factory;
-           use Kreait\Firebase\ServiceAccount;
-           
-           set_time_limit(0);
-            try{
-            if(isset($_POST['busLineSelect'])){
-                $busLine = $_POST['busLineSelect'];
-                $serviceAccount = ServiceAccount::fromJsonFile('../secret/transitports-ee351-ff3793a676d7.json');
-
-                $firebase = (new Factory)
-                        ->withServiceAccount($serviceAccount)
-                        ->withDatabaseUri('https://transitports-ee351.firebaseio.com')
-                        ->create();
-                
-                
-                $link = "https://transitports-ee351.firebaseio.com/Route/".$busLine;
-                
-                $database = $firebase->getDatabase();
-                $reference = $database->getReferenceFromUrl($link);
-                $snapshot = $reference->orderByValue()->getSnapshot();
-                $count = $snapshot->numChildren();
-                echo '<div class="text-center">';
-                
-                if($reference===null){
-                    echo '<p>No result found</p>';
-                }else{
-                   if($snapshot->hasChildren()){
-//                       echo "<script>";
-                       //t250 station arrange accordingly with its respective coord and name
-                       $childRef = $snapshot->getReference();
-//                       $childRef = $reference->getChildKeys();
-                       
-                       //accessing each child for it's coor and name
-                       for($i=1;$i<$count;$i++){
-                            $childResult = $childRef->getChild("$i");
-                            //able get all stations
-                            $densityResult = $childResult->getChild("density")->getValue();
-                            $latCoorResult = $childResult->getChild("latCoor")->getValue();
-                            $longCoorResult = $childResult->getChild("longCoor")->getValue();
-                            $stationNameResult = $childResult->getChild("stationName")->getValue();
-                            $marker = "marker"."$i";
-                            $coordinate = 'lat: '.$latCoorResult.', lng: '.$longCoorResult;
-                            
-                            //marker cannot shown
-                            echo 'var '.$marker.' = new google.maps.Marker({position: '. $coordinate.', map: map});';
-//                            echo "$marker.'= new google.maps.Marker({position: '.$coordinate.'map: map});";
-                            echo $marker.'.setMap(map);';
-                            
-                            
-                       }
-                       echo "</script>";
-                    }
-                    echo '<p>execution complete</p>';
-                }
-            }
-            }catch(Exception $ex){
-                echo $ex->getMessage()."<br />";
-            }
-
-            ?>
-            
-            
-              
-            
-            
-            
-           
             
 
         </div>

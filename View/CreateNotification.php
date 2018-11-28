@@ -91,38 +91,50 @@
         <div id="wrapper">
 
             <!-- Sidebar -->
-            <ul class="sidebar navbar-nav">
-                <li class="nav-item">
-                    <a class="nav-link" href="LandingMainPage.php">
-                        <i class="fas fa-fw fa-tachometer-alt"></i>
-                        <span>Dashboard</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="ScheduleMainPage.php">
-                        <i class="fas fa-fw fa-table"></i>
-                        <span>Schedule</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="MonitorMainPage.php">
-                        <i class="fas fa-fw fa-check-square"></i>
-                        <span>Monitor</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="NotificationMainPage.php">
-                        <i class="fas fa-fw fa-exclamation"></i>
-                        <span>Notification</span>
-
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="ReportMainPage.php">
-                        <i class="fas fa-fw fa-address-book"></i>
-                        <span>Report</span>
-                    </a>
-                </li>
+      <ul class="sidebar navbar-nav">
+        <li class="nav-item">
+            <a class="nav-link" href="../View/LandingMainPage.php">
+            <i class="fas fa-fw fa-tachometer-alt"></i>
+            <span>Dashboard</span>
+          </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="../View/DriverMainPage.php">
+            <i class="fas fa-fw fa-bus"></i>
+            <span>Driver</span>
+          </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="../View/RouteMainPage.php">
+            <i class="fas fa-fw fa-road"></i>
+            <span>Route</span>
+          </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="../View/ScheduleMainPage.php">
+            <i class="fas fa-fw fa-table"></i>
+            <span>Schedule</span>
+          </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="../View/MonitorMainPage.php">
+            <i class="fas fa-fw fa-check-square"></i>
+            <span>Monitor</span>
+          </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="../View/NotificationMainPage.php">
+            <i class="fas fa-fw fa-exclamation"></i>
+            <span>Notification</span>
+            
+          </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="../View/ReportMainPage.php">
+            <i class="fas fa-fw fa-address-book"></i>
+            <span>Report</span>
+          </a>
+        </li>
 
                 <!--        <li class="nav-item dropdown">
                           <a class="nav-link dropdown-toggle" href="#" id="pagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

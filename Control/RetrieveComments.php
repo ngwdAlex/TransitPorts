@@ -99,6 +99,18 @@
           </a>
         </li>
         <li class="nav-item">
+            <a class="nav-link" href="../View/DriverMainPage.php">
+            <i class="fas fa-fw fa-bus"></i>
+            <span>Driver</span>
+          </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="../View/RouteMainPage.php">
+            <i class="fas fa-fw fa-road"></i>
+            <span>Route</span>
+          </a>
+        </li>
+        <li class="nav-item">
             <a class="nav-link" href="../View/ScheduleMainPage.php">
             <i class="fas fa-fw fa-table"></i>
             <span>Schedule</span>

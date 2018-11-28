@@ -9,7 +9,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Main Page</title>
+    <title>Monitor</title>
 
     <!-- Bootstrap core CSS-->
     <link href="../CSS/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -23,13 +23,31 @@
     <!-- Custom styles for this template-->
     <link href="../CSS/css/sb-admin.css" rel="stylesheet">
 
+    
+    <style>
+        .map {
+            height: 650px;
+            width: 100%;
+        }
+        
+        #marker {
+        width: 20px;
+        height: 20px;
+        border: 1px solid #088;
+        border-radius: 10px;
+        background-color: #0FF;
+        opacity: 0.5;
+      }
+    </style>
+    
+    
   </head>
 
   <body id="page-top">
 
     <nav class="navbar navbar-expand navbar-dark bg-dark static-top">
 
-        <a class="navbar-brand mr-1" href="../View/LandingMainPage.php">TransitPorts</a>
+      <a class="navbar-brand mr-1" href="LandingMainPage.php">TransitPorts</a>
 
       <button class="btn btn-link btn-sm text-white order-1 order-sm-0" id="sidebarToggle" href="#">
         <i class="fas fa-bars"></i>
@@ -171,32 +189,20 @@
           <!-- Breadcrumbs-->
           <ol class="breadcrumb">
             <li class="breadcrumb-item">
-                <a href="../View/LandingMainPage.php">Dashboard</a>
+                <a href="LandingMainPage.php">Dashboard</a>
             </li>
-            <li class="breadcrumb-item active">Overview</li>
+            <li class="breadcrumb-item">
+                <a href="DriverMainPage.php">Driver</a>
+            </li>
+            <li class="breadcrumb-item active">Add Driver</li>
           </ol>
 
           <!-- Page Content -->
-          <h1>Welcome</h1>
-          <hr>
-          <div class="row">
-            <div class="col-xl-3 col-sm-6 mb-3">
-              <div class="card text-white bg-primary o-hidden h-100">
-                <div class="card-body">
-                  <div class="card-body-icon">
-                    <i class="fas fa-fw fa-comments"></i>
-                  </div>
-                  <div class="mr-5">Comments from user</div>
-                </div>
-                  <a class="card-footer text-white clearfix small z-1" href="../Control/RetrieveComments.php">
-                  <span class="float-left">View Comments</span>
-                  <span class="float-right">
-                    <i class="fas fa-angle-right"></i>
-                  </span>
-                </a>
-              </div>
-            </div>
-          </div>
+          <h1>Add Driver</h1>
+          <hr>          
+          <form method="post" action="../Control/DriverHandler.php">
+              
+          </form>
 
         </div>
         <!-- /.container-fluid -->

@@ -9,7 +9,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Monitor</title>
+    <title>Driver</title>
 
     <!-- Bootstrap core CSS-->
     <link href="../CSS/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -92,23 +92,23 @@
           </div>
         </li>-->
         <li class="nav-item dropdown no-arrow">
-          <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            <i class="fas fa-user-circle fa-fw"></i>
-          </a>
-          <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
-            <a class="dropdown-item" href="#">Settings</a>
-            <a class="dropdown-item" href="#">Activity Log</a>
-            <div class="dropdown-divider"></div>
-            <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">Logout</a>
-          </div>
-        </li>
-      </ul>
+                    <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="fas fa-user fa-fw"></i>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
+                        <a class="dropdown-item" href="#">Settings</a>
+                        <a class="dropdown-item" href="#">Activity Log</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">Logout</a>
+                    </div>
+                </li>
+            </ul>
 
-    </nav>
+        </nav>
 
-    <div id="wrapper">
+        <div id="wrapper">
 
-      <!-- Sidebar -->
+            <!-- Sidebar -->
       <ul class="sidebar navbar-nav">
         <li class="nav-item">
             <a class="nav-link" href="../View/LandingMainPage.php">
@@ -118,8 +118,14 @@
         </li>
         <li class="nav-item">
             <a class="nav-link" href="../View/DriverMainPage.php">
-            <i class="fas fa-fw fa-bus"></i>
+            <i class="fas fa-fw fa-user-circle"></i>
             <span>Driver</span>
+          </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="../View/BusMainPage.php">
+            <i class="fas fa-fw fa-bus"></i>
+            <span>Bus</span>
           </a>
         </li>
         <li class="nav-item">
@@ -152,8 +158,7 @@
             <i class="fas fa-fw fa-address-book"></i>
             <span>Report</span>
           </a>
-        </li>
-        
+        </li>      
 <!--        <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" id="pagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <i class="fas fa-fw fa-folder"></i>
@@ -200,10 +205,65 @@
           <!-- Page Content -->
           <h1>Add Driver</h1>
           <hr>          
-          <form method="post" action="../Control/DriverHandler.php">
-              
+          <form method="post" action="">
+              <p>Name:</p>
+              <input type="text" name="driverName"><br />
+              <p>Email:</p>
+              <input type="text" name="driverEmail"><br />
+              <p>Contact No:</p>
+              <input type="text" name="driverContactNo"><br />
+              <p>Password:</p>
+              <input type="text" name="driverPass"><br />
+              <button type="submit" name="btnSubmit">Submit</button>
           </form>
 
+          <?php
+            require '../vendor/autoload.php';
+
+            use Kreait\Firebase\Factory;
+            use Kreait\Firebase\ServiceAccount;
+
+// This assumes that you have placed the Firebase credentials in the same directory
+        // as this PHP file.
+        $serviceAccount = ServiceAccount::fromJsonFile('../secret/transitports-ee351-ff3793a676d7.json');
+
+        $firebase = (new Factory)
+                ->withServiceAccount($serviceAccount)
+                ->withDatabaseUri('https://transitports-ee351.firebaseio.com')
+                ->create();
+
+        $database = $firebase->getDatabase();
+        
+        $reference = $database->getReferenceFromUrl("https://transitports-ee351.firebaseio.com/Driver");
+        $snapshot = $reference->getSnapshot();
+        $count = $snapshot->numChildren();
+            if((isset($_POST['driverContactNo']))&& isset($_POST['driverEmail'])&& isset($_POST['driverName'])&&isset($_POST['driverPass'])){
+                date_default_timezone_set("Asia/Kuala_Lumpur");
+                $date = date("d/m/Y");
+                $contact = $_POST['driverContactNo'];
+                $email = $_POST['driverEmail'];
+                $name = $_POST['driverName'];
+                $pass = $_POST['driverPass'];
+                $status = "active";
+                $nextID = $count--;
+                
+                $newPost = $database
+                    ->getReference("Driver/".$nextID)
+                    ->set([
+                'contactNo' => $contact,
+                'dateJoined' => $date,
+                'email' => $email,
+                'password' => $pass,
+                'status' => $status,
+                'name' => $name
+                ]);
+                
+                echo '<form method="post" action="../View/DriverMainPage.php">';
+                echo 'Add driver complete!<br />';
+                echo '<button class="btn btn-primary" type="submit" name="btnProceed">Proceed</button>';
+                echo '</form>';
+            }
+          ?>
         </div>
         <!-- /.container-fluid -->
 

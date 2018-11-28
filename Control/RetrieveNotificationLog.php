@@ -75,7 +75,7 @@
                         </li>-->
                 <li class="nav-item dropdown no-arrow">
                     <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <i class="fas fa-user-circle fa-fw"></i>
+                        <i class="fas fa-user fa-fw"></i>
                     </a>
                     <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
                         <a class="dropdown-item" href="#">Settings</a>
@@ -100,8 +100,14 @@
         </li>
         <li class="nav-item">
             <a class="nav-link" href="../View/DriverMainPage.php">
-            <i class="fas fa-fw fa-bus"></i>
+            <i class="fas fa-fw fa-user-circle"></i>
             <span>Driver</span>
+          </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="../View/BusMainPage.php">
+            <i class="fas fa-fw fa-bus"></i>
+            <span>Bus</span>
           </a>
         </li>
         <li class="nav-item">

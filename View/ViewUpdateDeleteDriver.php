@@ -9,7 +9,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Report</title>
+    <title>Driver</title>
 
     <!-- Bootstrap core CSS-->
     <link href="../CSS/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -23,6 +23,10 @@
     <!-- Custom styles for this template-->
     <link href="../CSS/css/sb-admin.css" rel="stylesheet">
 
+    
+    
+    
+    
   </head>
 
   <body id="page-top">
@@ -179,48 +183,75 @@
             <li class="breadcrumb-item">
                 <a href="LandingMainPage.php">Dashboard</a>
             </li>
-            <li class="breadcrumb-item active">Report</li>
+            <li class="breadcrumb-item">
+                <a href="DriverMainPage.php">Driver</a>
+            </li>
+            <li class="breadcrumb-item active">View Driver</li>
           </ol>
 
           <!-- Page Content -->
-          <h1>Report</h1>
-          <hr>
-          <!-- Icon Cards-->
-          <div class="row">
-            <div class="col-xl-3 col-sm-6 mb-3">
-              <div class="card text-white bg-primary o-hidden h-100">
-                <div class="card-body">
-                  <div class="card-body-icon">
-                    <i class="fas fa-fw fa-road"></i>
-                  </div>
-                  <div class="mr-5">Route Report</div>
-                </div>
-                  <a class="card-footer text-white clearfix small z-1" href="RouteReport.php">
-                  <span class="float-left">View Report</span>
-                  <span class="float-right">
-                    <i class="fas fa-angle-right"></i>
-                  </span>
-                </a>
-              </div>
-            </div>
-            <div class="col-xl-3 col-sm-6 mb-3">
-              <div class="card text-white bg-warning o-hidden h-100">
-                <div class="card-body">
-                  <div class="card-body-icon">
-                    <i class="fas fa-fw fa-bus-alt"></i>
-                  </div>
-                  <div class="mr-5">Driver Report</div>
-                </div>
-                  <a class="card-footer text-white clearfix small z-1" href="DriverReport.php">
-                  <span class="float-left">View Report</span>
-                  <span class="float-right">
-                    <i class="fas fa-angle-right"></i>
-                  </span>
-                </a>
-              </div>
-            </div>
-          </div>
+          <h1>Driver Information</h1>
+          <hr>          
+          <form method="post" action="ViewUpdateDeleteDriver.php">
+              <p>Driver ID:</p>
+              <input type="text" name="driverID"><br />
+              
+              <button type="button" name="btnSearch">Search</button>
+              <button type="button" name="btnUpdate">Update</button>
+              <button type="button" name="btnDelete">Delete</button>
+          </form>
 
+          <article>
+        <?php
+           if (isset($_POST[btnSearch])) {
+               echo "This happens if you click hello";
+           }
+           if (isset($_POST[btnUpdate])) {
+               echo "This happens if you click goodBye";
+           }
+           if (isset($_POST[btnDelete])) {
+               echo "This happens if you click goodBye";
+           }
+        ?>
+     </article>
+          <?php
+            require '../vendor/autoload.php';
+
+            use Kreait\Firebase\Factory;
+            use Kreait\Firebase\ServiceAccount;
+
+// This assumes that you have placed the Firebase credentials in the same directory
+        // as this PHP file.
+        $serviceAccount = ServiceAccount::fromJsonFile('../secret/transitports-ee351-ff3793a676d7.json');
+
+        $firebase = (new Factory)
+                ->withServiceAccount($serviceAccount)
+                ->withDatabaseUri('https://transitports-ee351.firebaseio.com')
+                ->create();
+
+        $database = $firebase->getDatabase();
+        
+        $reference = $database->getReferenceFromUrl("https://transitports-ee351.firebaseio.com/Driver");
+        $snapshot = $reference->getSnapshot();
+        $count = $snapshot->numChildren();
+            if(isset($_POST['driverID'])){
+                $id = trim($_POST['driverID']);
+                $result = $database
+                    ->getReference("Driver/".$id)
+                    ->getValue();
+                if($result===null){
+                    echo 'No record found';
+                    
+                }else{
+                    
+                    echo '<form method="post" action="../View/DriverMainPage.php">';
+                    echo 'Record found<br />';
+                    echo '<button class="btn btn-primary" type="submit" name="btnBack">Back</button>';
+                    echo '</form>';
+                }
+                
+            }
+          ?>
         </div>
         <!-- /.container-fluid -->
 

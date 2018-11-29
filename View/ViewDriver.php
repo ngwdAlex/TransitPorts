@@ -9,7 +9,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Main Page</title>
+    <title>Driver</title>
 
     <!-- Bootstrap core CSS-->
     <link href="../CSS/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -23,13 +23,17 @@
     <!-- Custom styles for this template-->
     <link href="../CSS/css/sb-admin.css" rel="stylesheet">
 
+    
+    
+    
+    
   </head>
 
   <body id="page-top">
 
     <nav class="navbar navbar-expand navbar-dark bg-dark static-top">
 
-        <a class="navbar-brand mr-1" href="../View/LandingMainPage.php">TransitPorts</a>
+      <a class="navbar-brand mr-1" href="LandingMainPage.php">TransitPorts</a>
 
       <button class="btn btn-link btn-sm text-white order-1 order-sm-0" id="sidebarToggle" href="#">
         <i class="fas fa-bars"></i>
@@ -177,53 +181,27 @@
           <!-- Breadcrumbs-->
           <ol class="breadcrumb">
             <li class="breadcrumb-item">
-                <a href="../View/LandingMainPage.php">Dashboard</a>
+                <a href="LandingMainPage.php">Dashboard</a>
             </li>
-            <li class="breadcrumb-item active">Driver</li>
+            <li class="breadcrumb-item">
+                <a href="DriverMainPage.php">Driver</a>
+            </li>
+            <li class="breadcrumb-item active">View Driver</li>
           </ol>
 
           <!-- Page Content -->
-          <h1>Driver</h1>
-          <hr>
-          <!-- Icon Cards-->
-          <div class="row">
-            <div class="col-xl-3 col-sm-6 mb-3">
-              <div class="card text-white bg-primary o-hidden h-100">
-                <div class="card-body">
-                  <div class="card-body-icon">
-                    <i class="fas fa-fw fa-plus"></i>
-                  </div>
-                  <div class="mr-5">Add Driver</div>
-                </div>
-                  <a class="card-footer text-white clearfix small z-1" href="../View/AddNewDriver.php">
-                  <span class="float-left">Add new driver</span>
-                  <span class="float-right">
-                    <i class="fas fa-angle-right"></i>
-                  </span>
-                </a>
-              </div>
-            </div>
-            <div class="col-xl-3 col-sm-6 mb-3">
-              <div class="card text-white bg-warning o-hidden h-100">
-                <div class="card-body">
-                  <div class="card-body-icon">
-                    <i class="fas fa-fw fa-eye"></i>
-                  </div>
-                  <div class="mr-5">View Driver</div>
-                </div>
-                  <a class="card-footer text-white clearfix small z-1" href="../View/ViewDriver.php">
-                  <span class="float-left">Look at existing driver</span>
-                  <span class="float-right">
-                    <i class="fas fa-angle-right"></i>
-                  </span>
-                </a>
-              </div>
-            </div>
+          <h1>Driver Information</h1>
+          <hr>          
+          <form method="post" action="../Control/DriverProcess.php">
+              <p>Driver ID:</p>
+              <input type="text" name="driverID"><br />
               
-          </div>
+              <button type="submit" name="btnSearch">Search</button>
+              
+          </form>
 
-        </div>
-
+          
+          
         </div>
         <!-- /.container-fluid -->
 

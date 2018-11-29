@@ -192,28 +192,6 @@
           <!-- Page Content -->
           <h1>Driver Information</h1>
           <hr>          
-          <form method="post" action="ViewUpdateDeleteDriver.php">
-              <p>Driver ID:</p>
-              <input type="text" name="driverID"><br />
-              
-              <button type="button" name="btnSearch">Search</button>
-              <button type="button" name="btnUpdate">Update</button>
-              <button type="button" name="btnDelete">Delete</button>
-          </form>
-
-          <article>
-        <?php
-           if (isset($_POST[btnSearch])) {
-               echo "This happens if you click hello";
-           }
-           if (isset($_POST[btnUpdate])) {
-               echo "This happens if you click goodBye";
-           }
-           if (isset($_POST[btnDelete])) {
-               echo "This happens if you click goodBye";
-           }
-        ?>
-     </article>
           <?php
             require '../vendor/autoload.php';
 
@@ -241,17 +219,84 @@
                     ->getValue();
                 if($result===null){
                     echo 'No record found';
-                    
-                }else{
-                    
-                    echo '<form method="post" action="../View/DriverMainPage.php">';
-                    echo 'Record found<br />';
+                    echo '<form method="post" action="../View/ViewDriver.php">';
                     echo '<button class="btn btn-primary" type="submit" name="btnBack">Back</button>';
                     echo '</form>';
+                }else{?>
+                    
+                <table bgcolor="#C4C4C4" align="left" width="600" border="0">	  
+                        <tr>		
+                            <td>Driver ID</td>		
+                            <td><input id="id" name="address" type="text" value="<?php echo $id;?>" readonly/></td>	  
+                        </tr>
+                        <tr>		
+                            <td>Driver name </td>		
+                            <td><input id="name" type="text" name="name"  value="<?php echo $result['name'];?>"/></td>	  
+                        </tr>	  
+                        <tr>		
+                            <td>Driver email </td>		
+                            <td><input type="email" id="email" name="email" value="<?php echo $result['email'];?>"/></td>	  
+                        </tr>	  
+                        <tr>		
+                            <td>Driver contact number</td>		
+                            <td><input type="text" id="contactNo" name="contactNo" value="<?php echo $result['contactNo'];?>"/></td>	  
+                        </tr>
+                        <tr>		
+                            <td>Date joined</td>		
+                            <td><input type="text" id="dateJoined" name="date" value="<?php echo $result['dateJoined'];?>" readonly/></td>	  
+                        </tr>
+                        <tr>		
+                            <td>Driver status</td>		
+                            <td><input name="status" id="status" type="text" value="<?php echo $result['status'];?>"/></td>	  
+                        </tr>	
+                        <tr>		
+                            <td>Driver password</td>		
+                            <td><input name="password" id="password" type="text" value="<?php echo $result['password'];?>"/></td>	  
+                        </tr>
+                        <td>
+                            <button class="btn btn-primary" value="Update" name="update" onclick="updateDriver()">Update</button>
+                        </td>	 
+                        <td>
+                            <button class="btn btn-primary" value="Delete" name="delete" onclick="deleteDriver()">Delete</button>
+                        </td>	 
+                        <td>
+                            <button class="btn btn-primary" type="submit" name="btnBack" onclick="back()">Back</button>
+                        </td>
+                        
+                </table>
+<?php
+
                 }
                 
             }
           ?>
+
+          <script>
+              function updateDriver(){
+                  <?php
+                  $id = document.getElementById("id").value;
+                  $name = document.getElementById("name").value;
+                  $email = document.getElementById("email").value;
+                  $dateJoined = document.getElementById("dateJoined").value;
+                  $contactNo = document.getElementById("contactNo").value;
+                  $status = document.getElementById("status").value;
+                  $password = document.getElementById("password").value;
+                  $database->getReference("Driver/".$id)
+                          ->push([
+                              'name' =>$name,
+                              'email'=>$email,
+                              'dateJoined'=>$dateJoined,
+                              'contactNo'=>$contactNo,
+                              'password'=>$password,
+                              'status'=>$status
+                          ]);
+                  echo 'Update complete!';
+                  ?>
+                  
+              }
+          </script>
+          
+          
         </div>
         <!-- /.container-fluid -->
 
@@ -307,3 +352,4 @@
   </body>
 
 </html>
+

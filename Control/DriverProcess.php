@@ -212,91 +212,112 @@
         $reference = $database->getReferenceFromUrl("https://transitports-ee351.firebaseio.com/Driver");
         $snapshot = $reference->getSnapshot();
         $count = $snapshot->numChildren();
+        
             if(isset($_POST['driverID'])){
                 $id = trim($_POST['driverID']);
-                $result = $database
-                    ->getReference("Driver/".$id)
-                    ->getValue();
-                if($result===null){
+                if($_POST['driverID']===""){
                     echo 'No record found';
                     echo '<form method="post" action="../View/ViewDriver.php">';
                     echo '<button class="btn btn-primary" type="submit" name="btnBack">Back</button>';
                     echo '</form>';
-                }else{?>
-          <form method="post" onsubmit="processing()">
-                    <table bgcolor="#C4C4C4" align="left" width="800" border="0">	  
+                    
+                }else{
+                    $result = $database
+                        ->getReference("Driver/".$id)
+                        ->getValue();
+                    ?>
+          
+                    <form method="post">
+                    <table bgcolor="#C4C4C4" align="left" width="600" border="0">	  
                         <tr>		
                             <td>Driver ID</td>		
-                            <td><input id="id" size="50" name="address" type="text" value="<?php echo $id;?>" readonly/></td>	  
+                            <td><input id="id" name="id" type="text" value="<?php echo $id;?>" /></td>	  
                         </tr>
                         <tr>		
                             <td>Driver name </td>		
-                            <td><input id="name" size="50"type="text" name="name"  value="<?php echo $result['name'];?>"/></td>	  
+                            <td><input id="name" type="text" name="name"  value="<?php echo $result['name'];?>"/></td>	  
                         </tr>	  
                         <tr>		
                             <td>Driver email </td>		
-                            <td><input type="email" size="50"id="email" name="email" value="<?php echo $result['email'];?>"/></td>	  
+                            <td><input type="email" id="email" name="email" value="<?php echo $result['email'];?>"/></td>	  
                         </tr>	  
                         <tr>		
                             <td>Driver contact number</td>		
-                            <td><input type="text" size="50"id="contactNo" name="contactNo" value="<?php echo $result['contactNo'];?>"/></td>	  
+                            <td><input type="text" id="contactNo" name="contactNo" value="<?php echo $result['contactNo'];?>"/></td>	  
                         </tr>
                         <tr>		
                             <td>Date joined</td>		
-                            <td><input type="text" size="50"id="dateJoined" name="date" value="<?php echo $result['dateJoined'];?>" readonly/></td>	  
+                            <td><input type="text" id="dateJoined" name="date" value="<?php echo $result['dateJoined'];?>" /></td>	  
                         </tr>
                         <tr>		
                             <td>Driver status</td>		
-                            <td><input name="status"size="50" id="status" type="text" value="<?php echo $result['status'];?>"/></td>	  
+                            <td><input name="status" id="status" type="text" value="<?php echo $result['status'];?>"/></td>	  
                         </tr>	
                         <tr>		
                             <td>Driver password</td>		
-                            <td><input name="password"size="50" id="password" type="text" value="<?php echo $result['password'];?>"/></td>	  
+                            <td><input name="password" id="password" type="text" value="<?php echo $result['password'];?>"/></td>	  
                         </tr>
-                        <td>
-                            <button class="btn btn-primary" value="Update" name="update" onclick="updateDriver()">Update</button>
-                        </td>	 
-                        <td>
-                            <button class="btn btn-primary" value="Delete" name="delete" onclick="deleteDriver()">Delete</button>
-                        </td>	 
-                        <td>
-                            <button class="btn btn-primary" type="submit" name="btnBack" onclick="back()">Back</button>
-                        </td>
-                        
-                </table>
-              </form>
+                    </table>
+
+                    <button class="btn btn-primary" value="Update" name="update" >Update</button>
+                    <button class="btn btn-primary" value="Delete" name="delete" >Delete</button>
+                    </form>
+                    <button class="btn btn-primary" type="submit" name="back" >Back</button>
+          
 <?php
+
                 }
                 
+            
+            
             }
-          ?>
-
-          <script type="text/javascript">
-              processing(){
-                  <?php
-                  echo 'function initiated';
+?>
+             <?php
+             if(isset($_POST['update'])){
+                  $id = $_REQUEST['id'];
+                  $name = $_REQUEST['name'];
+                  $email = $_REQUEST['email'];
+                  $dateJoined = $_REQUEST['date'];
+                  $contactNo = $_REQUEST['contactNo'];
+                  $status = $_REQUEST['status'];
+                  $password = $_REQUEST['password'];
                   
-                  $id = document.getElementById("id").value;
-                  $name = document.getElementById("name").value;
-                  $email = document.getElementById("email").value;
-                  $dateJoined = document.getElementById("dateJoined").value;
-                  $contactNo = document.getElementById("contactNo").value;
-                  $status = document.getElementById("status").value;
-                  $password = document.getElementById("password").value;
-                  $database->getReference("Driver/".$id)
-                          ->push([
-                              'name' =>$name,
-                              'email'=>$email,
-                              'dateJoined'=>$dateJoined,
-                              'contactNo'=>$contactNo,
-                              'password'=>$password,
-                              'status'=>$status
-                          ]);
-                  echo 'Update complete!';
+                  $database->getReference("Driver/".(string)$id)
+                      ->set([
+                          'name' =>$name,
+                          'email'=>$email,
+                          'dateJoined'=>$dateJoined,
+                          'contactNo'=>$contactNo,
+                          'password'=>$password,
+                          'status'=>$status
+                      ]);
+                  echo '<form method="post" action="../View/ViewDriver.php">';
+                echo 'Update driver complete!<br />';
+                echo '<button class="btn btn-primary" type="submit" name="btnProceed">Proceed</button>';
+                echo '</form>';
+                  
+            }
+                  if(isset ($_POST['delete'])){
+                      $id = $_REQUEST['id'];
+                      
+                      $statusCheck = $database->getReference("Driver/".$id."/status")
+                              ->set("removed from system");
+                      echo '<form method="post" action="../View/ViewDriver.php">';
+                      echo 'Driver has been removed from the system!<br />';
+                      echo '<button class="btn btn-primary" type="submit" name="btnProceed">Proceed</button>';
+                      echo '</form>';
+                      
+                  }
+                  
+                  if(isset($_POST['back'])){
+                       
+                  }
+                  
+        
                   ?>
                   
-              }
-          </script>
+              
+          
           
           
         </div>

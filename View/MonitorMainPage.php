@@ -43,11 +43,28 @@
     
   </head>
 
-  <body id="page-top">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script type="text/javascript">
+    function startTime() {
+    var today = new Date();
+    var h = today.getHours();
+    var m = today.getMinutes();
+    var s = today.getSeconds();
+    var time = today.toLocaleTimeString();
+    var day = today.toLocaleDateString();
+    
+    document.getElementById('txt').innerHTML =
+    day + "     " + time;
+    setTimeout(startTime, 500);
+    }
+
+    </script>
+    
+    <body id="page-top" onload="startTime()">
 
     <nav class="navbar navbar-expand navbar-dark bg-dark static-top">
 
-      <a class="navbar-brand mr-1" href="LandingMainPage.php">TransitPorts</a>
+        <a class="navbar-brand mr-1" href="../View/LandingMainPage.php">TransitPorts</a>
 
       <button class="btn btn-link btn-sm text-white order-1 order-sm-0" id="sidebarToggle" href="#">
         <i class="fas fa-bars"></i>
@@ -55,14 +72,14 @@
 
       <!-- Navbar Search -->
       <form class="d-none d-md-inline-block form-inline ml-auto mr-0 mr-md-3 my-2 my-md-0">
-        <div class="input-group">
+<!--        <div class="input-group">
           <input type="text" class="form-control" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2">
           <div class="input-group-append">
             <button class="btn btn-primary" type="button">
               <i class="fas fa-search"></i>
             </button>
           </div>
-        </div>
+        </div>-->
       </form>
 
       <!-- Navbar -->
@@ -91,6 +108,9 @@
             <a class="dropdown-item" href="#">Something else here</a>
           </div>
         </li>-->
+        <li >
+            <div id="txt" class="navbar-brand mr-1"></div>
+        </li>
         <li class="nav-item dropdown no-arrow">
                     <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <i class="fas fa-user fa-fw"></i>

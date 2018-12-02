@@ -9,7 +9,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Comments</title>
+    <title>Bus</title>
 
     <!-- Bootstrap core CSS-->
     <link href="../CSS/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -199,80 +199,50 @@
             <li class="breadcrumb-item">
                 <a href="../View/LandingMainPage.php">Dashboard</a>
             </li>
-            <li class="breadcrumb-item active">Comments</li>
+            <li class="breadcrumb-item active">Bus</li>
           </ol>
 
           <!-- Page Content -->
-          <h1>Comments from user</h1>
+          <h1>Route</h1>
           <hr>
-          <?php
-        require '../vendor/autoload.php';
+          <!-- Icon Cards-->
+          <div class="row">
+            <div class="col-xl-3 col-sm-6 mb-3">
+              <div class="card text-white bg-primary o-hidden h-100">
+                <div class="card-body">
+                  <div class="card-body-icon">
+                    <i class="fas fa-fw fa-plus"></i>
+                  </div>
+                  <div class="mr-5">Add Bus</div>
+                </div>
+                  <a class="card-footer text-white clearfix small z-1" href="../View/AddNewBus.php">
+                  <span class="float-left">Add new bus</span>
+                  <span class="float-right">
+                    <i class="fas fa-angle-right"></i>
+                  </span>
+                </a>
+              </div>
+            </div>
+            <div class="col-xl-3 col-sm-6 mb-3">
+              <div class="card text-white bg-warning o-hidden h-100">
+                <div class="card-body">
+                  <div class="card-body-icon">
+                    <i class="fas fa-fw fa-eye"></i>
+                  </div>
+                  <div class="mr-5">View Bus</div>
+                </div>
+                  <a class="card-footer text-white clearfix small z-1" href="../View/ViewBus.php">
+                  <span class="float-left">Look at existing bus</span>
+                  <span class="float-right">
+                    <i class="fas fa-angle-right"></i>
+                  </span>
+                </a>
+              </div>
+            </div>
+              
+          </div>
 
-        use Kreait\Firebase\Factory;
-        use Kreait\Firebase\ServiceAccount;
-
-// This assumes that you have placed the Firebase credentials in the same directory
-        // as this PHP file.
-        $serviceAccount = ServiceAccount::fromJsonFile('../secret/transitports-ee351-ff3793a676d7.json');
-
-        $firebase = (new Factory)
-                ->withServiceAccount($serviceAccount)
-                ->withDatabaseUri('https://transitports-ee351.firebaseio.com')
-                ->create();
-
-        $database = $firebase->getDatabase();
-        
-        $reference = $database->getReferenceFromUrl("https://transitports-ee351.firebaseio.com/Comments");
-        $snapshot = $reference->getSnapshot();
-        $count = $snapshot->numChildren();
-        echo '<div class="text-center">';
-        if($reference===null){
-            echo 'No result found';
-        }else{
-           if($snapshot->hasChildren()){
-               $userIDKey = $reference->getChildKeys();
-               
-//               $first = $reference->startAt($childKey);
-                   echo '<div class="card-body">';
-                   echo '<div class="table-responsive">';
-                   echo '<table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">';
-                   echo '<thead>';
-                   echo '<tr>
-                      <th>Date</th>
-                      <th>Time</th>
-                      <th>Content</th>
-                      <th>Target</th>
-                      </tr>
-                   </thead>';
-                   echo '<tbody>';
-                   
-               for($i=0;$i<$count;$i++){
-                   
-                   $resultKey = $reference->getChildKeys()->getChildKeys();
-                   $result = $resultKey->getChildKeys();
-                   $dateResult = $resultKey->getChild("date")->getValue();
-                   $contentResult = $resultKey->getChild($result[1])->getValue();
-                   $timeResult = $resultKey->getChild($result[3])->getValue();
-                   $targetResult = $resultKey->getChild($result[0])->getValue();
-                   echo '<tr>';
-                   echo '<td>'.$dateResult.'</td>';
-                   echo '<td>'.$timeResult.'</td>';
-                   echo '<td>'.$contentResult.'</td>';
-                   echo '<td>'.$targetResult.'</td>';
-                   echo '</tr>';
-               }
-               echo '</tbody>'
-               . '</table>';
-               
-                echo '</div>';
-                echo '</div>';
-
-           }else{
-               echo 'No comments so far';
-           }
-        }
-        
-        ?>
+        </div>
 
         </div>
         <!-- /.container-fluid -->

@@ -9,7 +9,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Comments</title>
+    <title>Driver</title>
 
     <!-- Bootstrap core CSS-->
     <link href="../CSS/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -23,9 +23,12 @@
     <!-- Custom styles for this template-->
     <link href="../CSS/css/sb-admin.css" rel="stylesheet">
 
+    
+    
+    
+    
   </head>
-
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script type="text/javascript">
     function startTime() {
     var today = new Date();
@@ -197,19 +200,22 @@
           <!-- Breadcrumbs-->
           <ol class="breadcrumb">
             <li class="breadcrumb-item">
-                <a href="../View/LandingMainPage.php">Dashboard</a>
+                <a href="LandingMainPage.php">Dashboard</a>
             </li>
-            <li class="breadcrumb-item active">Comments</li>
+            <li class="breadcrumb-item">
+                <a href="DriverMainPage.php">Driver</a>
+            </li>
+            <li class="breadcrumb-item active">View Driver</li>
           </ol>
 
           <!-- Page Content -->
-          <h1>Comments from user</h1>
-          <hr>
+          <h1>Driver Information</h1>
+          <hr>          
           <?php
-        require '../vendor/autoload.php';
+            require '../vendor/autoload.php';
 
-        use Kreait\Firebase\Factory;
-        use Kreait\Firebase\ServiceAccount;
+            use Kreait\Firebase\Factory;
+            use Kreait\Firebase\ServiceAccount;
 
 // This assumes that you have placed the Firebase credentials in the same directory
         // as this PHP file.
@@ -222,58 +228,117 @@
 
         $database = $firebase->getDatabase();
         
-        $reference = $database->getReferenceFromUrl("https://transitports-ee351.firebaseio.com/Comments");
+        $reference = $database->getReferenceFromUrl("https://transitports-ee351.firebaseio.com/Driver");
         $snapshot = $reference->getSnapshot();
         $count = $snapshot->numChildren();
-        echo '<div class="text-center">';
-        if($reference===null){
-            echo 'No result found';
-        }else{
-           if($snapshot->hasChildren()){
-               $userIDKey = $reference->getChildKeys();
-               
-//               $first = $reference->startAt($childKey);
-                   echo '<div class="card-body">';
-                   echo '<div class="table-responsive">';
-                   echo '<table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">';
-                   echo '<thead>';
-                   echo '<tr>
-                      <th>Date</th>
-                      <th>Time</th>
-                      <th>Content</th>
-                      <th>Target</th>
-                      </tr>
-                   </thead>';
-                   echo '<tbody>';
-                   
-               for($i=0;$i<$count;$i++){
-                   
-                   $resultKey = $reference->getChildKeys()->getChildKeys();
-                   $result = $resultKey->getChildKeys();
-                   $dateResult = $resultKey->getChild("date")->getValue();
-                   $contentResult = $resultKey->getChild($result[1])->getValue();
-                   $timeResult = $resultKey->getChild($result[3])->getValue();
-                   $targetResult = $resultKey->getChild($result[0])->getValue();
-                   echo '<tr>';
-                   echo '<td>'.$dateResult.'</td>';
-                   echo '<td>'.$timeResult.'</td>';
-                   echo '<td>'.$contentResult.'</td>';
-                   echo '<td>'.$targetResult.'</td>';
-                   echo '</tr>';
-               }
-               echo '</tbody>'
-               . '</table>';
-               
-                echo '</div>';
-                echo '</div>';
-
-           }else{
-               echo 'No comments so far';
-           }
-        }
         
-        ?>
+            if(isset($_POST['driverID'])){
+                $id = trim($_POST['driverID']);
+                if($_POST['driverID']===""){
+                    echo 'No record found';
+                    echo '<form method="post" action="../View/ViewDriver.php">';
+                    echo '<button class="btn btn-primary" type="submit" name="btnBack">Back</button>';
+                    echo '</form>';
+                    
+                }else{
+                    $result = $database
+                        ->getReference("Driver/".$id)
+                        ->getValue();
+                    ?>
+          
+                    <form method="post">
+                    <table bgcolor="#C4C4C4" align="left" width="600" border="0">	  
+                        <tr>		
+                            <td>Driver ID</td>		
+                            <td><input id="id" name="id" type="text" value="<?php echo $id;?>" /></td>	  
+                        </tr>
+                        <tr>		
+                            <td>Driver name </td>		
+                            <td><input id="name" type="text" name="name"  value="<?php echo $result['name'];?>"/></td>	  
+                        </tr>	  
+                        <tr>		
+                            <td>Driver email </td>		
+                            <td><input type="email" id="email" name="email" value="<?php echo $result['email'];?>"/></td>	  
+                        </tr>	  
+                        <tr>		
+                            <td>Driver contact number</td>		
+                            <td><input type="text" id="contactNo" name="contactNo" value="<?php echo $result['contactNo'];?>"/></td>	  
+                        </tr>
+                        <tr>		
+                            <td>Date joined</td>		
+                            <td><input type="text" id="dateJoined" name="date" value="<?php echo $result['dateJoined'];?>" /></td>	  
+                        </tr>
+                        <tr>		
+                            <td>Driver status</td>		
+                            <td><input name="status" id="status" type="text" value="<?php echo $result['status'];?>"/></td>	  
+                        </tr>	
+                        <tr>		
+                            <td>Driver password</td>		
+                            <td><input name="password" id="password" type="text" value="<?php echo $result['password'];?>"/></td>	  
+                        </tr>
+                    </table>
 
+                    <button class="btn btn-primary" value="Update" name="update" >Update</button>
+                    <button class="btn btn-primary" value="Delete" name="delete" >Delete</button>
+                    </form>
+                    <button class="btn btn-primary" type="submit" name="back" >Back</button>
+          
+<?php
+
+                }
+                
+            
+            
+            }
+?>
+             <?php
+             if(isset($_POST['update'])){
+                  $id = $_REQUEST['id'];
+                  $name = $_REQUEST['name'];
+                  $email = $_REQUEST['email'];
+                  $dateJoined = $_REQUEST['date'];
+                  $contactNo = $_REQUEST['contactNo'];
+                  $status = $_REQUEST['status'];
+                  $password = $_REQUEST['password'];
+                  
+                  $database->getReference("Driver/".(string)$id)
+                      ->set([
+                          'name' =>$name,
+                          'email'=>$email,
+                          'dateJoined'=>$dateJoined,
+                          'contactNo'=>$contactNo,
+                          'password'=>$password,
+                          'status'=>$status
+                      ]);
+                  echo '<form method="post" action="../View/ViewDriver.php">';
+                echo 'Update driver complete!<br />';
+                echo '<button class="btn btn-primary" type="submit" name="btnProceed">Proceed</button>';
+                echo '</form>';
+                  
+            }
+                  if(isset ($_POST['delete'])){
+                      $id = $_REQUEST['id'];
+                      
+                      $statusCheck = $database->getReference("Driver/".$id."/status")
+                              ->set("removed from system");
+                      echo '<form method="post" action="../View/ViewDriver.php">';
+                      echo 'Driver has been removed from the system!<br />';
+                      echo '<button class="btn btn-primary" type="submit" name="btnProceed">Proceed</button>';
+                      echo '</form>';
+                      
+                  }
+                  
+                  if(isset($_POST['back'])){
+                       
+                  }
+                  
+        
+                  ?>
+                  
+              
+          
+          
+          
         </div>
         <!-- /.container-fluid -->
 
@@ -329,3 +394,4 @@
   </body>
 
 </html>
+

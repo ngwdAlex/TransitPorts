@@ -282,7 +282,9 @@
                     <button class="btn btn-primary" value="Update" name="update" >Update</button>
                     <button class="btn btn-primary" value="Delete" name="delete" >Delete</button>
                     </form>
-                    <button class="btn btn-primary" type="submit" name="back" >Back</button>
+                    <form method="post" action="../View/ViewDriver.php">
+                        <button class="btn btn-primary" type="submit" name="back" >Back</button>
+                    </form>
           
 <?php
 
@@ -329,9 +331,9 @@
                       
                   }
                   
-                  if(isset($_POST['back'])){
-                       
-                  }
+//                  if(isset($_POST['back'])){
+//                       header('../View/ViewBus.php');
+//                  }
                   
         
                   ?>

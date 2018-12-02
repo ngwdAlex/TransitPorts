@@ -228,60 +228,63 @@
 
         $database = $firebase->getDatabase();
         
-        $reference = $database->getReferenceFromUrl("https://transitports-ee351.firebaseio.com/Driver");
+        $reference = $database->getReferenceFromUrl("https://transitports-ee351.firebaseio.com/Bus");
         $snapshot = $reference->getSnapshot();
         $count = $snapshot->numChildren();
         
-            if(isset($_POST['driverID'])){
-                $id = trim($_POST['driverID']);
-                if($_POST['driverID']===""){
+            if(isset($_POST['plateNo'])){
+                $plateNo = trim($_POST['plateNo']);
+                if($_POST['plateNo']===""){
                     echo 'No record found';
-                    echo '<form method="post" action="../View/ViewDriver.php">';
+                    echo '<form method="post" action="../View/ViewBus.php">';
                     echo '<button class="btn btn-primary" type="submit" name="btnBack">Back</button>';
                     echo '</form>';
                     
                 }else{
                     $result = $database
-                        ->getReference("Driver/".$id)
+                        ->getReference($plateNo)
                         ->getValue();
                     ?>
           
                     <form method="post">
                     <table bgcolor="#C4C4C4" align="left" width="600" border="0">	  
                         <tr>		
+                            <td>Plate Number</td>		
+                            <td><input id="id" name="id" type="text" value="<?php echo $plateNo;?>" /></td>	  
+                        </tr>
+                        <tr>		
+                            <td>Date Joined</td>		
+                            <td><input id="name" type="text" name="name"  value="<?php echo $result['dateJoined'];?>"/></td>	  
+                        </tr>	  
+                        <tr>		
+                            <td>Bus Density</td>		
+                            <td><input type="email" id="density" name="density" value="<?php echo $result['density'];?>"/></td>	  
+                        </tr>	  
+                        <tr>		
+                            <td>Last maintained</td>		
+                            <td><input type="text" id="lastMaintained" name="lastMaintained" value="<?php echo $result['lastMaintained'];?>"/></td>	  
+                        </tr>
+                        <tr>		
                             <td>Driver ID</td>		
-                            <td><input id="id" name="id" type="text" value="<?php echo $id;?>" /></td>	  
+                            <td><input type="text" id="driverID" name="driverID" value="<?php echo $result['driverID'];?>" /></td>	  
                         </tr>
                         <tr>		
-                            <td>Driver name </td>		
-                            <td><input id="name" type="text" name="name"  value="<?php echo $result['name'];?>"/></td>	  
-                        </tr>	  
-                        <tr>		
-                            <td>Driver email </td>		
-                            <td><input type="email" id="email" name="email" value="<?php echo $result['email'];?>"/></td>	  
-                        </tr>	  
-                        <tr>		
-                            <td>Driver contact number</td>		
-                            <td><input type="text" id="contactNo" name="contactNo" value="<?php echo $result['contactNo'];?>"/></td>	  
-                        </tr>
-                        <tr>		
-                            <td>Date joined</td>		
-                            <td><input type="text" id="dateJoined" name="date" value="<?php echo $result['dateJoined'];?>" /></td>	  
-                        </tr>
-                        <tr>		
-                            <td>Driver status</td>		
-                            <td><input name="status" id="status" type="text" value="<?php echo $result['status'];?>"/></td>	  
+                            <td>Route ID</td>		
+                            <td><input name="route" id="route" type="text" value="<?php echo $result['routeID'];?>"/></td>	  
                         </tr>	
                         <tr>		
-                            <td>Driver password</td>		
-                            <td><input name="password" id="password" type="text" value="<?php echo $result['password'];?>"/></td>	  
+                            <td>Status</td>		
+                            <td><input name="status" id="status" type="text" value="<?php echo $result['status'];?>"/></td>	  
                         </tr>
                     </table>
 
                     <button class="btn btn-primary" value="Update" name="update" >Update</button>
                     <button class="btn btn-primary" value="Delete" name="delete" >Delete</button>
                     </form>
-                    <button class="btn btn-primary" type="submit" name="back" >Back</button>
+          <form method="post" action="../View/ViewBus.php">
+              <button class="btn btn-primary" type="submit" name="back" >Back</button>
+          </form>
+                    
           
 <?php
 
@@ -291,7 +294,7 @@
             
             }
 ?>
-             <?php
+             <?php//not yet do
              if(isset($_POST['update'])){
                   $id = $_REQUEST['id'];
                   $name = $_REQUEST['name'];

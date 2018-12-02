@@ -24,22 +24,6 @@
     <link href="../CSS/css/sb-admin.css" rel="stylesheet">
 
     
-    <style>
-        .map {
-            height: 650px;
-            width: 100%;
-        }
-        
-        #marker {
-        width: 20px;
-        height: 20px;
-        border: 1px solid #088;
-        border-radius: 10px;
-        background-color: #0FF;
-        opacity: 0.5;
-      }
-    </style>
-    
     
   </head>
 

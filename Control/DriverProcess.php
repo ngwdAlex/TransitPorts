@@ -279,8 +279,8 @@
                         </tr>
                     </table>
 
-                    <button class="btn btn-primary" value="Update" name="update" >Update</button>
-                    <button class="btn btn-primary" value="Delete" name="delete" >Delete</button>
+                    <button class="btn btn-primary" value="Update" name="update" >Update</button><br /><br />
+                    <button class="btn btn-primary" value="Delete" name="delete" >Delete</button><br /><br />
                     </form>
                     <form method="post" action="../View/ViewDriver.php">
                         <button class="btn btn-primary" type="submit" name="back" >Back</button>
@@ -313,7 +313,7 @@
                           'password'=>$password,
                           'status'=>$status
                       ]);
-                  echo '<form method="post" action="../View/ViewDriver.php">';
+                echo '<form method="post" action="../View/ViewDriver.php">';
                 echo 'Update driver complete!<br />';
                 echo '<button class="btn btn-primary" type="submit" name="btnProceed">Proceed</button>';
                 echo '</form>';

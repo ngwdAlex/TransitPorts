@@ -9,7 +9,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Driver</title>
+    <title>Bus</title>
 
     <!-- Bootstrap core CSS-->
     <link href="../CSS/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -209,7 +209,7 @@
           </ol>
 
           <!-- Page Content -->
-          <h1>Driver Information</h1>
+          <h1>Bus Information</h1>
           <hr>          
           <?php
             require '../vendor/autoload.php';
@@ -228,7 +228,7 @@
 
         $database = $firebase->getDatabase();
         
-        $reference = $database->getReferenceFromUrl("https://transitports-ee351.firebaseio.com/Bus");
+        $reference = $database->getReferenceFromUrl("https://transitports-ee351.firebaseio.com/Bus/");
         $snapshot = $reference->getSnapshot();
         $count = $snapshot->numChildren();
         
@@ -241,24 +241,25 @@
                     echo '</form>';
                     
                 }else{
+                    
                     $result = $database
-                        ->getReference($plateNo)
-                        ->getValue();
+                        ->getReference("Bus/".$plateNo)
+                        ->getValue(); 
                     ?>
-          
+      
                     <form method="post">
                     <table bgcolor="#C4C4C4" align="left" width="600" border="0">	  
                         <tr>		
                             <td>Plate Number</td>		
-                            <td><input id="id" name="id" type="text" value="<?php echo $plateNo;?>" /></td>	  
+                            <td><input id="plateNo" name="plateNo" type="text" value="<?php echo $plateNo;?>" /></td>	  
                         </tr>
                         <tr>		
                             <td>Date Joined</td>		
-                            <td><input id="name" type="text" name="name"  value="<?php echo $result['dateJoined'];?>"/></td>	  
+                            <td><input id="dateJoined" type="text" name="dateJoined"  value="<?php echo $result['dateJoined'];?>"/></td>	  
                         </tr>	  
                         <tr>		
                             <td>Bus Density</td>		
-                            <td><input type="email" id="density" name="density" value="<?php echo $result['density'];?>"/></td>	  
+                            <td><input type="text" id="density" name="density" value="<?php echo $result['density'];?>"/></td>	  
                         </tr>	  
                         <tr>		
                             <td>Last maintained</td>		
@@ -270,7 +271,7 @@
                         </tr>
                         <tr>		
                             <td>Route ID</td>		
-                            <td><input name="route" id="route" type="text" value="<?php echo $result['routeID'];?>"/></td>	  
+                            <td><input name="routeID" id="routeID" type="text" value="<?php echo $result['routeID'];?>"/></td>	  
                         </tr>	
                         <tr>		
                             <td>Status</td>		
@@ -278,12 +279,12 @@
                         </tr>
                     </table>
 
-                    <button class="btn btn-primary" value="Update" name="update" >Update</button>
-                    <button class="btn btn-primary" value="Delete" name="delete" >Delete</button>
+                    <button class="btn btn-primary" value="Update" name="updateBus" >Update</button><br /><br />
+                    <button class="btn btn-primary" value="Delete" name="deleteBus" >Delete</button><br /><br />
                     </form>
-          <form method="post" action="../View/ViewBus.php">
-              <button class="btn btn-primary" type="submit" name="back" >Back</button>
-          </form>
+                      <form method="post" action="../View/ViewBus.php">
+                          <button class="btn btn-primary" type="submit" name="backBus" >Back</button>
+                      </form>
                     
           
 <?php
@@ -294,46 +295,46 @@
             
             }
 ?>
-             <?php//not yet do
-             if(isset($_POST['update'])){
-                  $id = $_REQUEST['id'];
-                  $name = $_REQUEST['name'];
-                  $email = $_REQUEST['email'];
-                  $dateJoined = $_REQUEST['date'];
-                  $contactNo = $_REQUEST['contactNo'];
+             <?php 
+             if(isset($_POST['updateBus'])){
+                  $plateNo = $_REQUEST['plateNo'];
+                  $dateJoined = $_REQUEST['dateJoined'];
+                  $density = $_REQUEST['density'];
+                  $lastMaintained = $_REQUEST['lastMaintained'];
+                  $driverID = $_REQUEST['driverID'];
+                  $routeID = $_REQUEST['routeID'];
                   $status = $_REQUEST['status'];
-                  $password = $_REQUEST['password'];
                   
-                  $database->getReference("Driver/".(string)$id)
+                  
+                  $database->getReference("Bus/".(string)$plateNo)
                       ->set([
-                          'name' =>$name,
-                          'email'=>$email,
-                          'dateJoined'=>$dateJoined,
-                          'contactNo'=>$contactNo,
-                          'password'=>$password,
+                          'density' =>$density,
+                          'lastMaintained'=>(string)$lastMaintained,
+                          'dateJoined'=>(string)$dateJoined,
+                          'driverID'=>(string)$driverID,
+                          'routeID'=>(string)$routeID,
                           'status'=>$status
                       ]);
-                  echo '<form method="post" action="../View/ViewDriver.php">';
-                echo 'Update driver complete!<br />';
-                echo '<button class="btn btn-primary" type="submit" name="btnProceed">Proceed</button>';
-                echo '</form>';
+                    echo '<form method="post" action="../View/ViewBus.php">';
+                    echo 'Update bus complete!<br />';
+                    echo '<button class="btn btn-primary" type="submit" name="btnProceed">Proceed</button>';
+                    echo '</form>';
                   
             }
-                  if(isset ($_POST['delete'])){
-                      $id = $_REQUEST['id'];
+                  if(isset ($_POST['deleteBus'])){
+                      $plateNo = $_REQUEST['plateNo'];
                       
-                      $statusCheck = $database->getReference("Driver/".$id."/status")
+                      $statusCheck = $database->getReference("Bus/".$plateNo."/status")
                               ->set("removed from system");
-                      echo '<form method="post" action="../View/ViewDriver.php">';
-                      echo 'Driver has been removed from the system!<br />';
+                      
+                      
+                      echo '<form method="post" action="../View/ViewBus.php">';
+                      echo 'Bus has been removed from the system!<br />';
                       echo '<button class="btn btn-primary" type="submit" name="btnProceed">Proceed</button>';
                       echo '</form>';
                       
                   }
                   
-                  if(isset($_POST['back'])){
-                       
-                  }
                   
         
                   ?>

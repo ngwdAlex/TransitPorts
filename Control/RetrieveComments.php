@@ -224,20 +224,18 @@
         
         $reference = $database->getReferenceFromUrl("https://transitports-ee351.firebaseio.com/Comments");
         $snapshot = $reference->getSnapshot();
-        $count = $snapshot->numChildren();
+        $countUser = $snapshot->numChildren();
         echo '<div class="text-center">';
         if($reference===null){
             echo 'No result found';
         }else{
            if($snapshot->hasChildren()){
-               $userIDKey = $reference->getChildKeys();
-               
-//               $first = $reference->startAt($childKey);
                    echo '<div class="card-body">';
                    echo '<div class="table-responsive">';
                    echo '<table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">';
                    echo '<thead>';
                    echo '<tr>
+                      <th>From</th>
                       <th>Date</th>
                       <th>Time</th>
                       <th>Content</th>
@@ -245,21 +243,46 @@
                       </tr>
                    </thead>';
                    echo '<tbody>';
+                   $userIDKey = $reference->getChildKeys();
+                   //echo var_dump($userIDKey);//get user key(those who send)
+               for($userNo=0;$userNo<$countUser;$userNo++){
+                   $userSnap= $reference->getChild($userIDKey[$userNo]);
+                    $resultChild = $userSnap->getChildKeys();
+                           
+                   $countNotification = $userSnap->getSnapshot()->numChildren();//amount of notification sent by the user
                    
-               for($i=0;$i<$count;$i++){
-                   
-                   $resultKey = $reference->getChildKeys()->getChildKeys();
-                   $result = $resultKey->getChildKeys();
-                   $dateResult = $resultKey->getChild("date")->getValue();
-                   $contentResult = $resultKey->getChild($result[1])->getValue();
-                   $timeResult = $resultKey->getChild($result[3])->getValue();
-                   $targetResult = $resultKey->getChild($result[0])->getValue();
-                   echo '<tr>';
-                   echo '<td>'.$dateResult.'</td>';
-                   echo '<td>'.$timeResult.'</td>';
-                   echo '<td>'.$contentResult.'</td>';
-                   echo '<td>'.$targetResult.'</td>';
-                   echo '</tr>';
+//                   echo var_dump($countNotification);
+//               $first = $reference->startAt($childKey);
+                    
+                   for($i=0;$i<$countNotification;$i++){
+                       $contentResult = $userSnap->getChild($resultChild[$i])->getChild("Content")->getValue();
+                       $dateResult = $userSnap->getChild($resultChild[$i])->getChild("Date")->getValue();
+                       $timeResult = $userSnap->getChild($resultChild[$i])->getChild("Time")->getValue();
+                       $targetResult = $userSnap->getChild($resultChild[$i])->getChild('"Categories"')->getValue(); //need fix on mobile side
+                       
+//                       $resultNoti = $reference->getChild($userIDKey[$i])->getSnapshot();
+//                        $childResult = $resultNoti->getValue();
+//                       echo var_dump($userIDKey[$i]);
+//                       echo var_dump($resultChild);
+//                       echo var_dump($targetResult);
+//                       $userRef = $reference->getChild("$userIDKey[$i]")->getValue();
+//                       echo var_dump($userRef);
+//    //                   $result = $resultKey->getChildKeys();
+//
+//                       $result = $userSnap->getChild("$userRef[$i]")->getValue();
+//                       echo var_dump($result);
+    //                   $contentResult = $resultKey->getChild($result[1])->getValue();
+    //                   $timeResult = $resultKey->getChild($result[3])->getValue();
+    //                   $targetResult = $resultKey->getChild($result[0])->getValue();
+                       echo '<tr>';
+                       echo '<td>'.$userIDKey[$userNo].'</td>';
+                       echo '<td>'.$dateResult.'</td>';
+                       echo '<td>'.$timeResult.'</td>';
+                       echo '<td>'.$contentResult.'</td>';
+                       echo '<td>'.$targetResult.'</td>';
+                       echo '</tr>';
+                  }
+                  
                }
                echo '</tbody>'
                . '</table>';

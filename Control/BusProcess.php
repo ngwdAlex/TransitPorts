@@ -309,6 +309,9 @@
                   $database->getReference("Bus/".(string)$plateNo)
                       ->set([
                           'density' =>$density,
+                          'currentCoor'=>['latCoor'=>'3.2055411',
+                              'longCoor'=>'101.7318697',
+                              ],
                           'lastMaintained'=>(string)$lastMaintained,
                           'dateJoined'=>(string)$dateJoined,
                           'driverID'=>(string)$driverID,

@@ -9,7 +9,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Main Page</title>
+    <title>Monitor</title>
 
     <!-- Bootstrap core CSS-->
     <link href="../CSS/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -23,8 +23,27 @@
     <!-- Custom styles for this template-->
     <link href="../CSS/css/sb-admin.css" rel="stylesheet">
 
+    
+    <style>
+        .map {
+            height: 650px;
+            width: 100%;
+        }
+        
+        #marker {
+        width: 20px;
+        height: 20px;
+        border: 1px solid #088;
+        border-radius: 10px;
+        background-color: #0FF;
+        opacity: 0.5;
+      }
+    </style>
+    
+    
   </head>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script type="text/javascript">
     function startTime() {
     var today = new Date();
@@ -202,32 +221,87 @@
           <!-- Breadcrumbs-->
           <ol class="breadcrumb">
             <li class="breadcrumb-item">
-                <a href="../View/LandingMainPage.php">Dashboard</a>
+                <a href="LandingMainPage.php">Dashboard</a>
             </li>
-            <li class="breadcrumb-item active">Overview</li>
+            <li class="breadcrumb-item active">Monitor</li>
           </ol>
 
           <!-- Page Content -->
-          <h1>Welcome</h1>
+          <h1>Monitor</h1>
           <hr>
-          <div class="row">
-            <div class="col-xl-3 col-sm-6 mb-3">
-              <div class="card text-white bg-primary o-hidden h-100">
-                <div class="card-body">
-                  <div class="card-body-icon">
-                    <i class="fas fa-fw fa-comments"></i>
-                  </div>
-                  <div class="mr-5">Comments from user</div>
-                </div>
-                  <a class="card-footer text-white clearfix small z-1" href="../Control/RetrieveComments.php">
-                  <span class="float-left">View Comments</span>
-                  <span class="float-right">
-                    <i class="fas fa-angle-right"></i>
-                  </span>
-                </a>
-              </div>
-            </div>
-          </div>
+                   
+          <div id="map" class="map"></div>
+            
+          <script>
+          // Initialize and add the map
+            function initMap() {
+              // The location of wangsa maju center
+              var wangsaMajuCenter = {lat: 3.209281, lng: 101.727162};
+              //centering map view
+              var map = new google.maps.Map(
+                  document.getElementById('map'), {zoom: 15, center: wangsaMajuCenter});
+               var transitLayer = new google.maps.TransitLayer();
+               transitLayer.setMap(map);
+               }
+           </script>
+                <?php
+                require '../vendor/autoload.php';
+
+                use Kreait\Firebase\Factory;
+                use Kreait\Firebase\ServiceAccount;
+
+                set_time_limit(0);
+                try{
+                    $serviceAccount = ServiceAccount::fromJsonFile('../secret/transitports-ee351-ff3793a676d7.json');
+
+                    $firebase = (new Factory)
+                            ->withServiceAccount($serviceAccount)
+                            ->withDatabaseUri('https://transitports-ee351.firebaseio.com')
+                            ->create();
+
+                    
+
+                    $database = $firebase->getDatabase();
+                    $reference = $database->getReferenceFromUrl("https://transitports-ee351.firebaseio.com/Station/");
+                    $snapshot = $reference->getSnapshot();
+                    
+                    echo '<div class="text-center">';
+
+                    if($snapshot->hasChildren()){
+//                        $referenceChild = $snapshot->getValue();//can get all value
+//                        echo var_dump($referenceChild); 
+                        $childKey = $reference->getChildKeys();
+                        $val = $snapshot->getChild($childKey[1])->getValue();
+                        echo var_dump($val);
+                        
+//                        $count = $snapshot->numChildren();
+//                           for($i=0;$i<$count;$i++){     
+//                                $result = $reference->getChild($referenceChild[$i])->getValue();
+//                                echo var_dump($result);
+//                           }
+                    }else{
+                        echo '<p>No result found</p>';
+                         
+                    }   
+                    echo '</div>';
+                }catch(Exception $ex){
+                   echo $ex->getMessage()."<br />";
+                }
+                
+                ?> 
+            
+            
+            
+            
+            
+              
+            
+            
+            
+           <script async defer
+                src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBhrtJyw1UeO-GbLMukViXPRpJYWi5oz6k&callback=initMap">
+            </script>
+            
 
         </div>
         <!-- /.container-fluid -->

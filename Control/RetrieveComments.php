@@ -137,6 +137,12 @@
           </a>
         </li>
         <li class="nav-item">
+            <a class="nav-link" href="../View/StationMainPage.php">
+            <i class="fas fa-fw fa-sign"></i>
+            <span>Station</span>
+          </a>
+        </li>
+        <li class="nav-item">
             <a class="nav-link" href="../View/ScheduleMainPage.php">
             <i class="fas fa-fw fa-table"></i>
             <span>Schedule</span>
@@ -258,7 +264,7 @@
                        $contentResult = $userSnap->getChild($resultChild[$i])->getChild("Content")->getValue();
                        $dateResult = $userSnap->getChild($resultChild[$i])->getChild("Date")->getValue();
                        $timeResult = $userSnap->getChild($resultChild[$i])->getChild("Time")->getValue();
-                       $targetResult = $userSnap->getChild($resultChild[$i])->getChild('"Categories"')->getValue(); //need fix on mobile side
+                       $targetResult = $userSnap->getChild($resultChild[$i])->getChild("Categories")->getValue(); //need fix on mobile side
                        
 //                       $resultNoti = $reference->getChild($userIDKey[$i])->getSnapshot();
 //                        $childResult = $resultNoti->getValue();

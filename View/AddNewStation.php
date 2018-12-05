@@ -9,7 +9,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Main Page</title>
+    <title>Driver</title>
 
     <!-- Bootstrap core CSS-->
     <link href="../CSS/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -23,8 +23,11 @@
     <!-- Custom styles for this template-->
     <link href="../CSS/css/sb-admin.css" rel="stylesheet">
 
+    
+    
   </head>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script type="text/javascript">
     function startTime() {
     var today = new Date();
@@ -165,8 +168,7 @@
             <i class="fas fa-fw fa-address-book"></i>
             <span>Report</span>
           </a>
-        </li>
-        
+        </li>      
 <!--        <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" id="pagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <i class="fas fa-fw fa-folder"></i>
@@ -202,33 +204,74 @@
           <!-- Breadcrumbs-->
           <ol class="breadcrumb">
             <li class="breadcrumb-item">
-                <a href="../View/LandingMainPage.php">Dashboard</a>
+                <a href="LandingMainPage.php">Dashboard</a>
             </li>
-            <li class="breadcrumb-item active">Overview</li>
+            <li class="breadcrumb-item">
+                <a href="StationMainPage.php">Station</a>
+            </li>
+            <li class="breadcrumb-item active">Add Station</li>
           </ol>
 
           <!-- Page Content -->
-          <h1>Welcome</h1>
-          <hr>
-          <div class="row">
-            <div class="col-xl-3 col-sm-6 mb-3">
-              <div class="card text-white bg-primary o-hidden h-100">
-                <div class="card-body">
-                  <div class="card-body-icon">
-                    <i class="fas fa-fw fa-comments"></i>
-                  </div>
-                  <div class="mr-5">Comments from user</div>
-                </div>
-                  <a class="card-footer text-white clearfix small z-1" href="../Control/RetrieveComments.php">
-                  <span class="float-left">View Comments</span>
-                  <span class="float-right">
-                    <i class="fas fa-angle-right"></i>
-                  </span>
-                </a>
-              </div>
-            </div>
-          </div>
+          <h1>Add Driver</h1>
+          <hr>          
+          <form method="post" action="">
+              <p>Station Name:</p>
+              <input type="text" name="stationName"><br />
+              <p>Coordinate:</p>
+              <input type="text" name="coorLat" placeholder="Latitude"><br />
+              <input type="text" name="coorLong" placeholder="Longtitude"><br />
+              
+              
+              <button type="submit" name="btnSubmit">Submit</button>
+          </form>
 
+          <?php
+            require '../vendor/autoload.php';
+
+            use Kreait\Firebase\Factory;
+            use Kreait\Firebase\ServiceAccount;
+
+// This assumes that you have placed the Firebase credentials in the same directory
+        // as this PHP file.
+        $serviceAccount = ServiceAccount::fromJsonFile('../secret/transitports-ee351-ff3793a676d7.json');
+
+        $firebase = (new Factory)
+                ->withServiceAccount($serviceAccount)
+                ->withDatabaseUri('https://transitports-ee351.firebaseio.com')
+                ->create();
+
+        $database = $firebase->getDatabase();
+        
+        $reference = $database->getReferenceFromUrl("https://transitports-ee351.firebaseio.com/Station");
+        $snapshot = $reference->getSnapshot();
+        $count = $snapshot->numChildren();
+            if((isset($_POST['stationName']))&& isset($_POST['coorLat'])&& isset($_POST['coorLong'])){
+//                date_default_timezone_set("Asia/Kuala_Lumpur");
+//                $date = date("d/m/Y");
+                $name = $_POST['stationName'];
+                $latCoor = $_POST['coorLat'];
+                $longCoor = $_POST['coorLong'];
+//                $pass = $_POST['driverPass'];
+                $density = 0; //default density
+                $nextID = $count++;
+                
+                $newPost = $database
+                    ->getReference("Station/".$nextID)
+                    ->set([
+                'stationName' => $name,
+                'latCoor' => $latCoor,
+                'longCoor' => $longCoor,
+                'density' => (string)$density,
+                
+                ]);
+                
+                echo '<form method="post" action="../View/StationMainPage.php">';
+                echo 'Add driver complete!<br />';
+                echo '<button class="btn btn-primary" type="submit" name="btnProceed">Proceed</button>';
+                echo '</form>';
+            }
+          ?>
         </div>
         <!-- /.container-fluid -->
 

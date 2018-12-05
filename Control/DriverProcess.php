@@ -141,6 +141,12 @@
           </a>
         </li>
         <li class="nav-item">
+            <a class="nav-link" href="../View/StationMainPage.php">
+            <i class="fas fa-fw fa-sign"></i>
+            <span>Station</span>
+          </a>
+        </li>
+        <li class="nav-item">
             <a class="nav-link" href="../View/ScheduleMainPage.php">
             <i class="fas fa-fw fa-table"></i>
             <span>Schedule</span>

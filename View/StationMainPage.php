@@ -24,7 +24,8 @@
     <link href="../CSS/css/sb-admin.css" rel="stylesheet">
 
   </head>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script type="text/javascript">
     function startTime() {
     var today = new Date();
@@ -204,30 +205,50 @@
             <li class="breadcrumb-item">
                 <a href="../View/LandingMainPage.php">Dashboard</a>
             </li>
-            <li class="breadcrumb-item active">Overview</li>
+            <li class="breadcrumb-item active">Station</li>
           </ol>
 
           <!-- Page Content -->
-          <h1>Welcome</h1>
+          <h1>Station</h1>
           <hr>
+          <!-- Icon Cards-->
           <div class="row">
             <div class="col-xl-3 col-sm-6 mb-3">
               <div class="card text-white bg-primary o-hidden h-100">
                 <div class="card-body">
                   <div class="card-body-icon">
-                    <i class="fas fa-fw fa-comments"></i>
+                    <i class="fas fa-fw fa-plus"></i>
                   </div>
-                  <div class="mr-5">Comments from user</div>
+                  <div class="mr-5">Add Station</div>
                 </div>
-                  <a class="card-footer text-white clearfix small z-1" href="../Control/RetrieveComments.php">
-                  <span class="float-left">View Comments</span>
+                  <a class="card-footer text-white clearfix small z-1" href="../View/AddNewStation.php">
+                  <span class="float-left">Add new station</span>
                   <span class="float-right">
                     <i class="fas fa-angle-right"></i>
                   </span>
                 </a>
               </div>
             </div>
+            <div class="col-xl-3 col-sm-6 mb-3">
+              <div class="card text-white bg-warning o-hidden h-100">
+                <div class="card-body">
+                  <div class="card-body-icon">
+                    <i class="fas fa-fw fa-eye"></i>
+                  </div>
+                  <div class="mr-5">View Station</div>
+                </div>
+                  <a class="card-footer text-white clearfix small z-1" href="../View/ViewStation.php">
+                  <span class="float-left">Look at existing station</span>
+                  <span class="float-right">
+                    <i class="fas fa-angle-right"></i>
+                  </span>
+                </a>
+              </div>
+            </div>
+              
           </div>
+
+        </div>
 
         </div>
         <!-- /.container-fluid -->

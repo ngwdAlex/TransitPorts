@@ -268,11 +268,19 @@
                     echo '<div class="text-center">';
 
                     if($snapshot->hasChildren()){
-//                        $referenceChild = $snapshot->getValue();//can get all value
-//                        echo var_dump($referenceChild); 
-                        $childKey = $reference->getChildKeys();
-                        $val = $snapshot->getChild($childKey[1])->getValue();
-                        echo var_dump($val);
+                        $referenceChild = $snapshot->getValue();//can get all value
+                        $childCount = $snapshot->numChildren();
+                        
+                        for($i = 1; $i<$childCount;$i++){
+                            $childKey = $reference->getChildKeys();
+                            $reference->getChild("latCoor"[$childKey]);
+                            echo var_dump($childKey);
+                             
+                        }
+                        
+//                        $childKey = $reference->getChildKeys();
+//                        $val = $snapshot->getChild($childKey[1])->getValue();
+//                        echo var_dump($val);
                         
 //                        $count = $snapshot->numChildren();
 //                           for($i=0;$i<$count;$i++){     
